@@ -1,0 +1,330 @@
+commands = {
+   json2lua = {
+      "lua-cjson/2.1.0.10-1"
+   },
+   lua2json = {
+      "lua-cjson/2.1.0.10-1"
+   }
+}
+dependencies = {
+   ["lua-cjson"] = {
+      ["2.1.0.10-1"] = {
+         {
+            constraints = {
+               {
+                  op = ">=",
+                  version = {
+                     5, 1, string = "5.1"
+                  }
+               }
+            },
+            name = "lua"
+         }
+      }
+   },
+   ["lua-resty-balancer"] = {
+      ["0.04-0"] = {}
+   },
+   ["lua-resty-cookie"] = {
+      ["0.4.0-1"] = {
+         {
+            constraints = {
+               {
+                  op = ">=",
+                  version = {
+                     5, 1, string = "5.1"
+                  }
+               }
+            },
+            name = "lua"
+         }
+      }
+   },
+   ["lua-resty-core"] = {
+      ["0.1.17-4"] = {
+         {
+            constraints = {},
+            name = "lua-resty-lrucache"
+         }
+      }
+   },
+   ["lua-resty-global-throttle"] = {
+      ["0.2.0-1"] = {}
+   },
+   ["lua-resty-ipmatcher"] = {
+      ["0.6.1-0"] = {}
+   },
+   ["lua-resty-lrucache"] = {
+      ["0.09-2"] = {}
+   }
+}
+modules = {
+   cjson = {
+      "lua-cjson/2.1.0.10-1"
+   },
+   ["cjson.util"] = {
+      "lua-cjson/2.1.0.10-1"
+   },
+   json2lua = {
+      "lua-cjson/2.1.0.10-1"
+   },
+   librestychash = {
+      "lua-resty-balancer/0.04-0"
+   },
+   lua2json = {
+      "lua-cjson/2.1.0.10-1"
+   },
+   ["ngx.balancer"] = {
+      "lua-resty-core/0.1.17-4"
+   },
+   ["ngx.base64"] = {
+      "lua-resty-core/0.1.17-4"
+   },
+   ["ngx.errlog"] = {
+      "lua-resty-core/0.1.17-4"
+   },
+   ["ngx.ocsp"] = {
+      "lua-resty-core/0.1.17-4"
+   },
+   ["ngx.pipe"] = {
+      "lua-resty-core/0.1.17-4"
+   },
+   ["ngx.process"] = {
+      "lua-resty-core/0.1.17-4"
+   },
+   ["ngx.re"] = {
+      "lua-resty-core/0.1.17-4"
+   },
+   ["ngx.resp"] = {
+      "lua-resty-core/0.1.17-4"
+   },
+   ["ngx.semaphore"] = {
+      "lua-resty-core/0.1.17-4"
+   },
+   ["ngx.ssl"] = {
+      "lua-resty-core/0.1.17-4"
+   },
+   ["ngx.ssl.session"] = {
+      "lua-resty-core/0.1.17-4"
+   },
+   ["resty.balancer.utils"] = {
+      "lua-resty-balancer/0.04-0"
+   },
+   ["resty.chash"] = {
+      "lua-resty-balancer/0.04-0"
+   },
+   ["resty.cookie"] = {
+      "lua-resty-cookie/0.4.0-1"
+   },
+   ["resty.core"] = {
+      "lua-resty-core/0.1.17-4"
+   },
+   ["resty.core.base"] = {
+      "lua-resty-core/0.1.17-4"
+   },
+   ["resty.core.base64"] = {
+      "lua-resty-core/0.1.17-4"
+   },
+   ["resty.core.ctx"] = {
+      "lua-resty-core/0.1.17-4"
+   },
+   ["resty.core.exit"] = {
+      "lua-resty-core/0.1.17-4"
+   },
+   ["resty.core.hash"] = {
+      "lua-resty-core/0.1.17-4"
+   },
+   ["resty.core.misc"] = {
+      "lua-resty-core/0.1.17-4"
+   },
+   ["resty.core.ndk"] = {
+      "lua-resty-core/0.1.17-4"
+   },
+   ["resty.core.phase"] = {
+      "lua-resty-core/0.1.17-4"
+   },
+   ["resty.core.regex"] = {
+      "lua-resty-core/0.1.17-4"
+   },
+   ["resty.core.request"] = {
+      "lua-resty-core/0.1.17-4"
+   },
+   ["resty.core.response"] = {
+      "lua-resty-core/0.1.17-4"
+   },
+   ["resty.core.shdict"] = {
+      "lua-resty-core/0.1.17-4"
+   },
+   ["resty.core.time"] = {
+      "lua-resty-core/0.1.17-4"
+   },
+   ["resty.core.uri"] = {
+      "lua-resty-core/0.1.17-4"
+   },
+   ["resty.core.utils"] = {
+      "lua-resty-core/0.1.17-4"
+   },
+   ["resty.core.var"] = {
+      "lua-resty-core/0.1.17-4"
+   },
+   ["resty.core.worker"] = {
+      "lua-resty-core/0.1.17-4"
+   },
+   ["resty.global_throttle"] = {
+      "lua-resty-global-throttle/0.2.0-1"
+   },
+   ["resty.global_throttle.sliding_window"] = {
+      "lua-resty-global-throttle/0.2.0-1"
+   },
+   ["resty.global_throttle.store"] = {
+      "lua-resty-global-throttle/0.2.0-1"
+   },
+   ["resty.global_throttle.store.memcached"] = {
+      "lua-resty-global-throttle/0.2.0-1"
+   },
+   ["resty.global_throttle.store.shared_dict"] = {
+      "lua-resty-global-throttle/0.2.0-1"
+   },
+   ["resty.ipmatcher"] = {
+      "lua-resty-ipmatcher/0.6.1-0"
+   },
+   ["resty.lrucache"] = {
+      "lua-resty-lrucache/0.09-2"
+   },
+   ["resty.lrucache.pureffi"] = {
+      "lua-resty-lrucache/0.09-2"
+   },
+   ["resty.roundrobin"] = {
+      "lua-resty-balancer/0.04-0"
+   }
+}
+repository = {
+   ["lua-cjson"] = {
+      ["2.1.0.10-1"] = {
+         {
+            arch = "installed",
+            commands = {
+               json2lua = "json2lua",
+               lua2json = "lua2json"
+            },
+            dependencies = {},
+            modules = {
+               cjson = "cjson.so",
+               ["cjson.util"] = "cjson/util.lua",
+               json2lua = "json2lua.lua",
+               lua2json = "lua2json.lua"
+            }
+         }
+      }
+   },
+   ["lua-resty-balancer"] = {
+      ["0.04-0"] = {
+         {
+            arch = "installed",
+            commands = {},
+            dependencies = {},
+            modules = {
+               librestychash = "librestychash.so",
+               ["resty.balancer.utils"] = "resty/balancer/utils.lua",
+               ["resty.chash"] = "resty/chash.lua",
+               ["resty.roundrobin"] = "resty/roundrobin.lua"
+            }
+         }
+      }
+   },
+   ["lua-resty-cookie"] = {
+      ["0.4.0-1"] = {
+         {
+            arch = "installed",
+            commands = {},
+            dependencies = {},
+            modules = {
+               ["resty.cookie"] = "resty/cookie.lua"
+            }
+         }
+      }
+   },
+   ["lua-resty-core"] = {
+      ["0.1.17-4"] = {
+         {
+            arch = "installed",
+            commands = {},
+            dependencies = {
+               ["lua-resty-lrucache"] = "0.09-2"
+            },
+            modules = {
+               ["ngx.balancer"] = "ngx/balancer.lua",
+               ["ngx.base64"] = "ngx/base64.lua",
+               ["ngx.errlog"] = "ngx/errlog.lua",
+               ["ngx.ocsp"] = "ngx/ocsp.lua",
+               ["ngx.pipe"] = "ngx/pipe.lua",
+               ["ngx.process"] = "ngx/process.lua",
+               ["ngx.re"] = "ngx/re.lua",
+               ["ngx.resp"] = "ngx/resp.lua",
+               ["ngx.semaphore"] = "ngx/semaphore.lua",
+               ["ngx.ssl"] = "ngx/ssl.lua",
+               ["ngx.ssl.session"] = "ngx/ssl/session.lua",
+               ["resty.core"] = "resty/core.lua",
+               ["resty.core.base"] = "resty/core/base.lua",
+               ["resty.core.base64"] = "resty/core/base64.lua",
+               ["resty.core.ctx"] = "resty/core/ctx.lua",
+               ["resty.core.exit"] = "resty/core/exit.lua",
+               ["resty.core.hash"] = "resty/core/hash.lua",
+               ["resty.core.misc"] = "resty/core/misc.lua",
+               ["resty.core.ndk"] = "resty/core/ndk.lua",
+               ["resty.core.phase"] = "resty/core/phase.lua",
+               ["resty.core.regex"] = "resty/core/regex.lua",
+               ["resty.core.request"] = "resty/core/request.lua",
+               ["resty.core.response"] = "resty/core/response.lua",
+               ["resty.core.shdict"] = "resty/core/shdict.lua",
+               ["resty.core.time"] = "resty/core/time.lua",
+               ["resty.core.uri"] = "resty/core/uri.lua",
+               ["resty.core.utils"] = "resty/core/utils.lua",
+               ["resty.core.var"] = "resty/core/var.lua",
+               ["resty.core.worker"] = "resty/core/worker.lua"
+            }
+         }
+      }
+   },
+   ["lua-resty-global-throttle"] = {
+      ["0.2.0-1"] = {
+         {
+            arch = "installed",
+            commands = {},
+            dependencies = {},
+            modules = {
+               ["resty.global_throttle"] = "resty/global_throttle.lua",
+               ["resty.global_throttle.sliding_window"] = "resty/global_throttle/sliding_window.lua",
+               ["resty.global_throttle.store"] = "resty/global_throttle/store.lua",
+               ["resty.global_throttle.store.memcached"] = "resty/global_throttle/store/memcached.lua",
+               ["resty.global_throttle.store.shared_dict"] = "resty/global_throttle/store/shared_dict.lua"
+            }
+         }
+      }
+   },
+   ["lua-resty-ipmatcher"] = {
+      ["0.6.1-0"] = {
+         {
+            arch = "installed",
+            commands = {},
+            dependencies = {},
+            modules = {
+               ["resty.ipmatcher"] = "resty/ipmatcher.lua"
+            }
+         }
+      }
+   },
+   ["lua-resty-lrucache"] = {
+      ["0.09-2"] = {
+         {
+            arch = "installed",
+            commands = {},
+            dependencies = {},
+            modules = {
+               ["resty.lrucache"] = "resty/lrucache.lua",
+               ["resty.lrucache.pureffi"] = "resty/lrucache/pureffi.lua"
+            }
+         }
+      }
+   }
+}
