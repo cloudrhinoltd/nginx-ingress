@@ -201,7 +201,7 @@ cc -I/usr/local/include -I/usr/include/openssl -I/usr/include/pcre -I$LUAJIT_INS
 ----------------------------------------
 checking for crypt()
 
-/usr/bin/ld: /tmp/ccmS8Gge.o: in function `main':
+/usr/bin/ld: /tmp/ccfViicB.o: in function `main':
 /home/kryuchkov/git/ngx_waf_ingress_controller/src/nginx-1.27.1/objs/autotest.c:7: undefined reference to `crypt'
 collect2: error: ld returned 1 exit status
 ----------
@@ -315,7 +315,7 @@ checking for statvfs()
 ----------------------------------------
 checking for dlopen()
 
-/usr/bin/ld: /tmp/cciA7yJh.o: in function `main':
+/usr/bin/ld: /tmp/ccfdy7hV.o: in function `main':
 /home/kryuchkov/git/ngx_waf_ingress_controller/src/nginx-1.27.1/objs/autotest.c:7: undefined reference to `dlopen'
 /usr/bin/ld: /home/kryuchkov/git/ngx_waf_ingress_controller/src/nginx-1.27.1/objs/autotest.c:7: undefined reference to `dlsym'
 collect2: error: ld returned 1 exit status
@@ -674,7 +674,7 @@ objs/autotest.c: In function 'main':
 objs/autotest.c:7:5: warning: implicit declaration of function 'setproctitle' [-Wimplicit-function-declaration]
     7 |     setproctitle("test");;
       |     ^~~~~~~~~~~~
-/usr/bin/ld: /tmp/cc8g2exs.o: in function `main':
+/usr/bin/ld: /tmp/ccnx4TXV.o: in function `main':
 /home/kryuchkov/git/ngx_waf_ingress_controller/src/nginx-1.27.1/objs/autotest.c:7: undefined reference to `setproctitle'
 collect2: error: ld returned 1 exit status
 ----------
@@ -714,7 +714,7 @@ objs/autotest.c:7:18: warning: implicit declaration of function 'strerrordesc_np
 objs/autotest.c:7:16: warning: assignment to 'char *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
     7 |     char *p; p = strerrordesc_np(0);
       |                ^
-/usr/bin/ld: /tmp/ccEsfg63.o: in function `main':
+/usr/bin/ld: /tmp/ccjojFlW.o: in function `main':
 /home/kryuchkov/git/ngx_waf_ingress_controller/src/nginx-1.27.1/objs/autotest.c:7: undefined reference to `strerrordesc_np'
 collect2: error: ld returned 1 exit status
 ----------
@@ -736,7 +736,7 @@ cc -I/usr/local/include -I/usr/include/openssl -I/usr/include/pcre -I$LUAJIT_INS
 ----------------------------------------
 checking for sys_nerr
 
-/usr/bin/ld: /tmp/cckgA1Ee.o: in function `main':
+/usr/bin/ld: /tmp/ccHmoPjW.o: in function `main':
 /home/kryuchkov/git/ngx_waf_ingress_controller/src/nginx-1.27.1/objs/autotest.c:8: warning: `sys_nerr' is deprecated; use `strerror' or `strerror_r' instead
 135
 ----------------------------------------
@@ -770,7 +770,7 @@ checking for System V shared memory
 ----------------------------------------
 checking for POSIX semaphores
 
-/usr/bin/ld: /tmp/ccUhvS2P.o: in function `main':
+/usr/bin/ld: /tmp/ccu3UX9C.o: in function `main':
 /home/kryuchkov/git/ngx_waf_ingress_controller/src/nginx-1.27.1/objs/autotest.c:8: undefined reference to `sem_init'
 /usr/bin/ld: /home/kryuchkov/git/ngx_waf_ingress_controller/src/nginx-1.27.1/objs/autotest.c:9: undefined reference to `sem_destroy'
 collect2: error: ld returned 1 exit status
@@ -1009,7 +1009,7 @@ objs/autotest.c:7:5: warning: implicit declaration of function 'SSL_set_quic_met
     7 |     SSL_set_quic_method(NULL, NULL);
       |     ^~~~~~~~~~~~~~~~~~~
       |     SSL_set_ssl_method
-/usr/bin/ld: /tmp/ccjzxR3o.o: in function `main':
+/usr/bin/ld: /tmp/cc2P0mhf.o: in function `main':
 /home/kryuchkov/git/ngx_waf_ingress_controller/src/nginx-1.27.1/objs/autotest.c:7: undefined reference to `SSL_set_quic_method'
 collect2: error: ld returned 1 exit status
 ----------

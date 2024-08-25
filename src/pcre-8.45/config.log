@@ -1536,7 +1536,7 @@ configure: failed program was:
 configure:15905: result: no
 configure:15797: checking whether pthreads work without any flags
 configure:15895: cc -o conftest -O2 -fomit-frame-pointer -pipe     conftest.c   >&5
-/usr/bin/ld: /tmp/ccHO5gyx.o: in function `main':
+/usr/bin/ld: /tmp/cchEk0Zz.o: in function `main':
 conftest.c:(.text.startup+0x30): undefined reference to `pthread_create'
 /usr/bin/ld: conftest.c:(.text.startup+0x3c): undefined reference to `pthread_join'
 /usr/bin/ld: conftest.c:(.text.startup+0x67): undefined reference to `__pthread_register_cancel'

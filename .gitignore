@@ -1,0 +1,131 @@
+# Node modules and related files
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# Logs
+logs/
+*.log
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Build artifacts
+build/
+dist/
+*.out
+*.o
+*.a
+*.so
+*.exe
+*.dll
+*.dylib
+*.log
+
+# CMake build artifacts
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# Temporary files
+*.tmp
+*.swp
+*.swo
+*.bak
+*.backup
+*~
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+
+# Compiled shared objects
+*.so
+
+# Terraform state files
+*.tfstate
+*.tfstate.*
+
+# Kubernetes
+k8s-output/
+.terraform/
+
+# GitHub Actions
+.github/workflows/.DS_Store
+
+# Coverage reports
+coverage/
+*.lcov
+
+# Documentation
+/target/
+/out/
+
+# Secrets and config files
+.env
+.env.*
+*.pem
+*.key
+*.crt
+*.pfx
+
+# Nginx generated files
+nginx.pid
+nginx.lock
+modules/
+
+# Generated files by configure
+configure
+config.status
+config.log
+
+# Backup files
+*.bak
+
+# IDEs and editors
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Go vendor directory (when using Go modules)
+vendor/
+
+# Go build artifacts
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Go coverage files
+*.cover
+coverage.out
+
+# Go specific directories
+bin/
+pkg/
+cmd/
+test/
+
+# Go workspace file
+go.work
+
+# Go plugin files
+*.a
+*.o
+*.h
+
+# Cloned WAF module
+ngx-waf-protect/  
+
+# All standard modules
+src/

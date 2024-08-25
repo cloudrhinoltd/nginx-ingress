@@ -1,4 +1,26 @@
 #!/bin/bash
+#
+# Copyright (C) 2024 Cloud Rhino Pty Ltd
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# 
+# This script contains parts under a dual-license:
+# Only the 'enable_protocol_attack' and 'enable_general_rules' features are 
+# covered by the Apache 2.0 License, other features require a commercial license.
+# 
+# GitHub Repo: https://github.com/cloudrhinoltd/ngx-waf-protect
+# Contact Email: cloudrhinoltd@gmail.com
+
 set -ex
 
 # Define variables
@@ -10,7 +32,6 @@ NGINX_CONF="$HOME_DIR/build/config/nginx.conf"
 NGINX_EXEC="$NGINX_SRC_DIR/objs/nginx"
 NGINX_LOG_DIR="$HOME_DIR/logs"
 NGINX_TEMP_DIR="$HOME_DIR/build/temp"
-GEOIP_DB_PATH="$HOME_DIR/build/geoip/GeoLite2-City.mmdb"
 BUILD_DIR="$HOME_DIR/build"
 
 LUAJIT_VERSION="2.1-20240815"
@@ -57,7 +78,7 @@ NGX_HTTP_GEOIP2_MODULE_DIR="$PROJECT_DIR/ngx_http_geoip2_module-$NGX_HTTP_GEOIP2
 NGX_BROTLI_DIR="$PROJECT_DIR/ngx_brotli"
 
 # Custom WAF Module path
-WAF_MODULE_DIR="$HOME_DIR/../ngx_waf_protect/ngx_http_waf_module"
+WAF_MODULE_DIR="$HOME_DIR/../ngx-waf-protect/ngx_http_waf_module"
 
 # Ensure directories exist
 mkdir -p "$PROJECT_DIR"
@@ -70,6 +91,7 @@ mkdir -p "$NGINX_TEMP_DIR/fastcgi_temp"
 mkdir -p "$NGINX_TEMP_DIR/uwsgi_temp"
 mkdir -p "$NGINX_TEMP_DIR/scgi_temp"
 mkdir -p "$HOME_DIR/build/config"
+mkdir -p "$HOME_DIR/build/geoip"
 
 PCRE_VERSION="8.45"
 PCRE_DIR="$PROJECT_DIR/pcre-$PCRE_VERSION"
@@ -237,13 +259,14 @@ fi
 cd $HOME_DIR
 
 # Configure and build NGINX with all required modules
-cd "$NGINX_SRC_DIR"
-if [ -n "$WAF_MODULE_DIR" ]; then
-    WAF_MODULE_OPTION="--add-module=$WAF_MODULE_DIR"
-else
-    WAF_MODULE_OPTION=""
-    exit 1
+if [ ! -d "$WAF_MODULE_DIR" ]; then
+    git clone https://github.com/cloudrhinoltd/ngx-waf-protect.git
+    WAF_MODULE_DIR="$HOME_DIR/ngx-waf-protect/ngx_http_waf_module"
 fi
+
+cd "$NGINX_SRC_DIR"
+WAF_MODULE_OPTION="--add-module=$WAF_MODULE_DIR"
+GEOIP_DB_PATH="$WAF_MODULE_DIR/../build/geoip/GeoLite2-City.mmdb"
 
 ./configure --prefix='' \
             --conf-path="$NGINX_CONF" \
@@ -346,145 +369,17 @@ http {
         location / {
             clrh_waf_handler;
 
-            enable_sql_injection off;
-            enable_xss off;
-            enable_protocol_attack off;
-            enable_rce_php_node off;
-            enable_session_rules off;
-            enable_general_rules on;
-
-            path_traversal_evasion_header_pattern "/.././../";
-            path_traversal_evasion_body_pattern "/.././../";
-
-            sql_injection_common_testing_pattern "(union.*select|select.*from|drop.*table|insert.*into|or.*=.*|--|;|exec|union|select|concat|information_schema)";
-            sql_injection_comment_sequence_pattern "(--|/\\*|\\*/|#)";
-            sql_injection_attack_pattern "(union.*select|select.*from|drop.*table|insert.*into|or.*=.*|--|;|exec|union|select|concat|information_schema)";
-            sql_authentication_bypass_pattern "(admin'--|or.*=.*|--|;|union.*select)";
-
+            # WAF Rules Configuration
+            enable_general_rules on;          # Apache License 2.0
+            enable_protocol_attack on;        # Apache License 2.0
+            enable_sql_injection off;         # Requires Commercial License
+            enable_xss off;                   # Requires Commercial License
+            enable_rce_php_node off;          # Requires Commercial License
+            enable_session_rules off;         # Requires Commercial License
 
             geoip_db_path "$GEOIP_DB_PATH";
+            sql_injection_common_testing_pattern "(union.*select|select.*from|drop.*table|insert.*into|or.*=.*|--|;|exec|union|select|concat|information_schema)";
             xss_pattern "(<script.*?>.*?</script.*?>|onload=.*?|javascript:|alert\()";
-            file_inclusion_pattern "(http://|https://|ftp://|../../|/etc/passwd|C:\\\\windows)";
-            command_injection_pattern "(;|&&|\||wget|curl|system|exec|sh|bash)";
-            directory_traversal_pattern "(../|..\\\\|/etc/passwd|/etc/shadow)";
-            parameter_tampering_pattern "(unusual|suspicious|manipulated)";
-            protocol_anomaly_pattern "(invalid|unusual|oversized|abnormal)";
-            malicious_user_agent_pattern "(badbot|evilbot|scrapy|crawler|scanner)";
-            url_encoding_abuse_pattern ".*%[0-9a-fA-F]{2}.*";
-            invalid_request_line_pattern "^(?![A-Z]+\s+/\S*\sHTTP/(1\.[01]|2\.0|3\.0)$)";
-            multipart_bypass_pattern ".*multipart.*";
-            invalid_range_pattern ".*bytes=0-.*";
-            multiple_url_encoding_pattern ".*%25.*%25.*";
-            invalid_content_type_pattern "^(?!application/json|text/html|application/xml|application/x-www-form-urlencoded|multipart/form-data|text/plain).*$";
-            invalid_charset_pattern "charset\s*=\s*(?!utf-8|iso-8859-1|us-ascii|windows-1252|shift_jis|euc-jp|gb2312|big5|iso-8859-2|iso-8859-15)([^;]+)";
-            backup_file_pattern ".*\.bak.*";
-            ldap_injection_pattern "(&&|\|\||\(\)|\*|\))";
-            path_traversal_pattern "(/\.\./)";
-            os_file_access_pattern "(/etc/passwd|/etc/shadow|/etc/group)";
-            restricted_file_access_pattern "(\.htaccess|\.htpasswd|\.git|\.svn|/WEB-INF/)";
-            rfi_ip_pattern "((http|https|ftp|ftps)://\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})";
-            rfi_common_param_pattern "(\burl\b|\bfile\b|\bpath\b|\bpage\b=)";
-            rfi_trailing_question_mark_pattern "(?.*$)";
-            rfi_off_domain_pattern "((http|https|ftp|ftps)://)";
-
-            # RCE Patterns
-            rce_unix_command_injection_pattern "(\b(cat|ls|ps|netstat|whoami|id)\b|;|&&|\|)";
-            rce_windows_command_injection_pattern "(\b(cmd|powershell|net user|net localgroup)\b|;|&&|\|)";
-            rce_windows_powershell_pattern "(\bpowershell\b)";
-            rce_unix_shell_expression_pattern "($\(.*\)|\.*\)";
-            rce_windows_for_if_pattern "(\bfor\b|\bif\b)";
-            rce_direct_unix_command pattern "(\bexec\b|\bsystem\b)";
-            rce_unix_shell_code pattern "(\b/bin/sh\b|\b/bin/bash\b)";
-            rce_shellshock pattern "(\(\)\s*\{)";
-            restricted_file_upload pattern "(\.php|\.asp|\.jsp)";
-
-            # PHP Injection Patterns
-            php_opening_closing_tag pattern "(<\?(php)?|\?>)";
-            php_script_file_upload pattern "(\.(php|phtml|phar)$)";
-            php_config_directive pattern "(\b(ini_set|ini_get|dl|disable_functions|disable_classes)\b)";
-            php_variables pattern "(\$_(GET|POST|COOKIE|REQUEST|FILES|ENV|SERVER|SESSION|GLOBALS)\b)";
-            php_io_stream pattern "(php:\/\/input|data:\/\/text\/plain|php:\/\/filter)";
-            php_high_risk_function_name pattern "(\b(exec|shell_exec|system|passthru|popen|proc_open)\b)";
-            php_medium_risk_function_name pattern "(\b(eval|assert|preg_replace|create_function|include|require)\b)";
-            php_high_risk_function_call pattern "(\b(call_user_func|call_user_func_array)\b)";
-            php_serialized_object_injection pattern "(O:\d+:\"[^\"]+\":\d+:\{[^\}]+\})";
-            php_variable_function_call pattern "(\${.*?}\(.*?\))";
-            php_wrapper_scheme pattern "(data:\/\/text\/plain;base64,)";
-
-            # Node.js Injection Pattern
-            nodejs_injection pattern "(require\(|child_process|fs\.|eval\()";
-
-            # XSS Patterns
-            xss_libinjection pattern "pattern_for_libinjection";
-            xss_libinjection_101 pattern "pattern_for_libinjection_101";
-            xss_script_tag_vector pattern "<script.*?>";
-            xss_event_handler_vector pattern "on(load|error|click|mouseover)=";
-            xss_attribute vector pattern "style=.*expression";
-            xss_js_uri vector pattern "javascript:";
-            xss_disallowed_html_attributes pattern "srcdoc|srcset|formaction";
-            xss_html_injection pattern "<.*?>";
-            xss_attribute_injection pattern "=[\"'].*?[\"']";
-            xss_node_validator_blocklist pattern "alert|eval|execScript";
-            xss_using_stylesheets pattern "<style>.*</style>";
-            xss_using_vml_frames pattern "<xml>.*</xml>";
-            xss_obfuscated_javascript pattern "btoa|atob|fromCharCode";
-            xss_obfuscated_vbscript pattern "vbscript:";
-            xss_using_embed_tag pattern "<embed.*?>";
-            xss_using_import_attribute pattern "import=.*";
-            xss_ie_filters pattern "expression|eval";
-            xss_using_meta_tag pattern "<meta.*?>";
-            xss_using_link_href pattern "<link.*?href=";
-            xss_using_base_tag pattern "<base.*?>";
-            xss_using_applet_tag pattern "<applet.*?>";
-            xss_us_ascii encoding pattern "%u[0-9a-fA-F]{4}";
-            xss_html_tag_handler pattern "<.*?>";
-            xss_ie_filters_320 pattern "src=.*?";
-            xss_ie_filters_330 pattern "on.*?=";
-            xss_ie_filters_340 pattern "style=.*?";
-            xss_utf7 encoding pattern "\+ADw-";
-            xss_js_obfuscation pattern "fromCharCode|eval";
-            xss_js_global_variable pattern "window\.";
-            xss_angularjs_template injection pattern "{{.*?}}";
-
-            # SQL Injection Patterns
-            sqli_benchmark_sleep pattern "(sleep\(\d+\)|benchmark\(\d+,)";
-            sqli_operator pattern "(=|<|>|!|\|\||\&\&|<>|>=|<=|!=|LIKE|BETWEEN|IS NULL|IS NOT NULL)";
-            sql_injection pattern "(union.*select|select.*from|drop.*table|insert.*into|or.*=.*|--|;|exec|union|select|concat|information_schema)";
-            sqli_libinjection pattern "pattern_for_libinjection";
-            sqli_common_injection testing pattern "select.*from.*where";
-            sqli_common_db names pattern "(information_schema|mysql|pg_catalog)";
-            sqli_blind_sqli testing pattern "(sleep|benchmark)";
-            sqli_authentication bypass_1 pattern "(or.*=.*|--|;|union.*select)";
-            sqli_mssql_code execution pattern "exec.*xp_";
-            sqli_mysql_comment obfuscation pattern "/\*!.*\*/";
-            sqli_chained_injection_1 pattern "and.*select";
-            sqli_integer overflow pattern "(\d{10,}|\d+\.\d+e\d+|0x[0-9a-fA-F]+)";
-            sqli_conditional injection pattern "(case when|if\()";
-            sqli_mysql_charset switch pattern "charset=utf8";
-            sqli_match against pattern "match.*against";
-            sqli_authentication bypass_2 pattern "admin'--";
-            sqli_basic injection pattern "(union.*select|select.*from|insert.*into|delete.*from|update.*set)";
-            sqli_postgres_sleep pattern "pg_sleep";
-            sqli_mongodb injection pattern "db\.getCollection";
-            sqli_mysql_comment condition pattern "(--|\#|/\*|\*/|;|')";
-            sqli_chained_injection_2 pattern "select.*and.*select";
-            sqli_mysql_postgres function pattern "(\(.*select.*\))";
-            sqli_classic injection_1 pattern "or.*=.*";
-            sqli_authentication bypass_3 pattern "or.*=.*--";
-            sqli_mysql_udf injection pattern "udf_";
-            sqli_concatenated injection pattern "concat.*select";
-            sqli_keyword alter_union pattern "(alter|union)";
-            sqli_classic injection_2 pattern "(select|insert|update|delete|drop|exec)";
-            sqli_attack pattern "(select|union|insert|drop|update|delete|exec)";
-            sqli_restricted character pattern "[;\"']";
-            sqli_comment sequence pattern "--";
-            sqli_hex encoding pattern "0x[0-9a-fA-F]+";
-            sqli_meta character pattern "\W";
-            sqli_bypass ticks pattern "\|'";
-            sqli_mysql_inline comment pattern "--.*$";
-
-            max_requests_per_minute 20; # Temporarily lower this for testing
-            block_duration 600;
 
             root   $BUILD_DIR/html;
             index  index.html index.htm;
@@ -500,9 +395,9 @@ EOF
 
 cd $HOME_DIR
 
-# Create a simple HTML file for testing
+# Create a simple HTML file for the module home page
 mkdir -p "$BUILD_DIR/html"
-echo "<html><body><h1>CLRH NGINX WAF Module Test</h1></body></html>" > "$BUILD_DIR/html/index.html"
+echo "<html><body><h1>CLRH NGINX WAF Protect Module</h1></body></html>" > "$BUILD_DIR/html/index.html"
 
 # Check if NGINX binary exists
 if [ ! -f "$NGINX_EXEC" ]; then
@@ -511,7 +406,12 @@ if [ ! -f "$NGINX_EXEC" ]; then
 fi
 
 cp $NGINX_EXEC $BUILD_DIR/nginx
+cp "$WAF_MODULE_DIR/../build/mime.types" "$BUILD_DIR"
+cp "$WAF_MODULE_DIR/../build/geoip/GeoLite2-City.mmdb" "$BUILD_DIR/geoip"
+
+# Output success message
+echo "Custom NGINX with WAF Protect module built successfully and located at $BUILD_DIR."
 
 # cd $HOME_DIR/$PROJECT_DIR
-# ./build/sbin/nginx -c ./build/config/nginx.conf
+# ./build/nginx -c ./build/config/nginx.conf
 
