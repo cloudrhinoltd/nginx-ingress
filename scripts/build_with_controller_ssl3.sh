@@ -23,6 +23,26 @@
 
 set -ex
 
+# Function to check and install missing packages
+install_if_missing() {
+    PACKAGE=$1
+    if ! dpkg -s "$PACKAGE" >/dev/null 2>&1; then
+        sudo apt-get update
+        sudo apt-get install -y "$PACKAGE"
+    fi
+}
+
+# Install necessary packages
+install_if_missing "build-essential"
+install_if_missing "libpcre3"
+install_if_missing "libpcre3-dev"
+install_if_missing "zlib1g"
+install_if_missing "zlib1g-dev"
+install_if_missing "libssl-dev"
+install_if_missing "cmake"
+install_if_missing "git"
+install_if_missing "wget"
+
 # Define variables
 HOME_DIR=$(pwd)
 NGINX_VERSION="1.27.1"
@@ -143,7 +163,6 @@ if [ ! -f $INGRESS_NGINX_DIR/rootfs/bin/$GOARCH/nginx-ingress-controller ]; then
     cp "$INGRESS_NGINX_DIR/rootfs/bin/$GOARCH/wait-shutdown" "$BUILD_DIR/wait-shutdown"
     cp "$INGRESS_NGINX_DIR/rootfs/bin/$GOARCH/dbg" "$BUILD_DIR/dbg"
     chmod +x "$BUILD_DIR/nginx-ingress-controller" "$BUILD_DIR/wait-shutdown"
-
 fi
 
 cd $HOME_DIR
@@ -323,7 +342,6 @@ cd "$NGINX_SRC_DIR"
 WAF_MODULE_OPTION="--add-module=$WAF_MODULE_DIR"
 GEOIP_DB_PATH="$WAF_MODULE_DIR/../build/geoip/GeoLite2-City.mmdb"
 
-
 make clean || true
 
 export CFLAGS="-I/usr/local/ssl/include"
@@ -472,5 +490,3 @@ cp "$WAF_MODULE_DIR/../build/geoip/GeoLite2-City.mmdb" "$BUILD_DIR/geoip"
 # Output success message
 echo "Custom NGINX with WAF Protect module built successfully and located at $BUILD_DIR."
 
-# cd $HOME_DIR/$PROJECT_DIR
-# ./build/nginx -c ./build/config/nginx.conf

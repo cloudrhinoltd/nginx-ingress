@@ -23,10 +23,25 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
+    # Optional: Cache dependencies to speed up the build process
+    - name: Cache LuaRocks dependencies
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.cache/luarocks
+        key: ${{ runner.os }}-luarocks-${{ hashFiles('**/lua_rocks') }}
+        restore-keys: |
+          ${{ runner.os }}-luarocks-
+
     - name: Build Docker image
       run: |
         bash scripts/build_with_controller_ssl3.sh
         docker buildx build -f Dockerfile --tag ghcr.io/cloudrhinoltd/nginx-ingress:${{ github.ref_name }} .
+
+    # Optional: Test the Docker image before pushing
+    - name: Test Docker image
+      run: |
+        docker run --rm ghcr.io/cloudrhinoltd/nginx-ingress:${{ github.ref_name }} nginx -t
 
     - name: Push Docker image
       run: |
