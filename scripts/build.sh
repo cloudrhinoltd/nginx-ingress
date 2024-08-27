@@ -30,7 +30,7 @@ PROJECT_DIR="$HOME_DIR/src"
 NGINX_SRC_DIR="$PROJECT_DIR/nginx-$NGINX_VERSION"
 NGINX_CONF="$HOME_DIR/build/config/nginx.conf"
 NGINX_EXEC="$NGINX_SRC_DIR/objs/nginx"
-NGINX_LOG_DIR="$HOME_DIR/logs"
+NGINX_LOG_DIR="$HOME_DIR/build/logs"
 NGINX_TEMP_DIR="$HOME_DIR/build/temp"
 BUILD_DIR="$HOME_DIR/build"
 
@@ -377,7 +377,7 @@ http {
             enable_rce_php_node off;          # Requires Commercial License
             enable_session_rules off;         # Requires Commercial License
 
-            geoip_db_path "$GEOIP_DB_PATH";
+            geoip_db_path "geoip/GeoLite2-City.mmdb";
             sql_injection_common_testing_pattern "(union.*select|select.*from|drop.*table|insert.*into|or.*=.*|--|;|exec|union|select|concat|information_schema)";
             xss_pattern "(<script.*?>.*?</script.*?>|onload=.*?|javascript:|alert\()";
 
@@ -406,7 +406,7 @@ if [ ! -f "$NGINX_EXEC" ]; then
 fi
 
 cp $NGINX_EXEC $BUILD_DIR/nginx
-cp "$WAF_MODULE_DIR/../build/mime.types" "$BUILD_DIR"
+cp "$WAF_MODULE_DIR/../build/mime.types" "$BUILD_DIR/config"
 cp "$WAF_MODULE_DIR/../build/geoip/GeoLite2-City.mmdb" "$BUILD_DIR/geoip"
 
 # Output success message

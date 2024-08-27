@@ -1,7 +1,7 @@
 
 CC =	cc
-CFLAGS = -I/home/kryuchkov/git/ngx_waf_ingress_controller/src/luajit/include/luajit-2.1 -I/home/kryuchkov/git/ngx_waf_ingress_controller/src/luajit/include/luajit-2.1  -pipe  -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I/usr/local/include -I/usr/include/openssl -I/usr/include/pcre -I$LUAJIT_INSTALL_DIR/include/luajit-2.1 -DNGX_HTTP_HEADERS -g -O2 -fPIE -fstack-protector-strong -Wformat -Werror=format-security -Wno-deprecated-declarations -fno-strict-aliasing -D_FORTIFY_SOURCE=2 --param=ssp-buffer-size=4 -DTCP_FASTOPEN=23 -fPIC -Wno-cast-function-type -m64 -mtune=generic -DNDK_SET_VAR -DNDK_UPSTREAM_LIST -DNDK_SET_VAR -Wno-deprecated-declarations
-CPP =	cc -E
+CFLAGS = -I/home/kryuchkov/git/ngx_waf_ingress_controller/src/luajit/include/luajit-2.1 -I/home/kryuchkov/git/ngx_waf_ingress_controller/src/luajit/include/luajit-2.1 -I/usr/local/ssl/include -I/usr/local/ssl/include -I/usr/include/pcre -I/home/kryuchkov/git/ngx_waf_ingress_controller/src/luajit/include/luajit-2.1 -DNGX_HTTP_HEADERS -g -O2 -fPIE -fstack-protector-strong -Wformat -Werror=format-security -Wno-deprecated-declarations -fno-strict-aliasing -D_FORTIFY_SOURCE=2 --param=ssp-buffer-size=4 -DTCP_FASTOPEN=23 -fPIC -Wno-cast-function-type -m64 -mtune=generic -DNDK_SET_VAR -DNDK_UPSTREAM_LIST -DNDK_SET_VAR -Wno-deprecated-declarations
+CPP =	
 LINK =	$(CC)
 
 
@@ -16,6 +16,7 @@ ALL_INCS = -I src/core \
 	-I /home/kryuchkov/git/ngx_waf_ingress_controller/src/stream-lua-nginx-module-0.0.15/src/api \
 	-I /home/kryuchkov/git/ngx_waf_ingress_controller/src/ngx_brotli/deps/brotli/c/include \
 	-I /home/kryuchkov/git/ngx_waf_ingress_controller/src/pcre-8.45 \
+	-I /home/kryuchkov/git/ngx_waf_ingress_controller/src/openssl-3.0.9/.openssl/include \
 	-I objs \
 	-I src/http \
 	-I src/http/modules \
@@ -109,6 +110,7 @@ CORE_DEPS = src/core/nginx.h \
 	src/event/quic/ngx_event_quic_openssl_compat.h \
 	src/core/ngx_regex.h \
 	/home/kryuchkov/git/ngx_waf_ingress_controller/src/pcre-8.45/pcre.h \
+	/home/kryuchkov/git/ngx_waf_ingress_controller/src/openssl-3.0.9/.openssl/include/openssl/ssl.h \
 	objs/ngx_auto_config.h
 
 
@@ -123,6 +125,7 @@ CORE_INCS = -I src/core \
 	-I /home/kryuchkov/git/ngx_waf_ingress_controller/src/stream-lua-nginx-module-0.0.15/src/api \
 	-I /home/kryuchkov/git/ngx_waf_ingress_controller/src/ngx_brotli/deps/brotli/c/include \
 	-I /home/kryuchkov/git/ngx_waf_ingress_controller/src/pcre-8.45 \
+	-I /home/kryuchkov/git/ngx_waf_ingress_controller/src/openssl-3.0.9/.openssl/include \
 	-I objs
 
 
@@ -833,7 +836,7 @@ objs/nginx:	objs/src/core/nginx.o \
 	objs/addon/src/ngx_stream_lua_input_filters.o \
 	objs/addon/src/ngx_http_lua_upstream_module.o \
 	objs/ngx_modules.o \
-	-L/home/kryuchkov/git/ngx_waf_ingress_controller/src/luajit/lib -L/home/kryuchkov/git/ngx_waf_ingress_controller/src/luajit/lib -L../ngx_brotli/deps/brotli/out -lbrotlienc -lmaxminddb -lbrotlicommon -lm -fPIE -fPIC -pie -Wl,-z,relro -Wl,-z,now -Wl,-E -Wl,-E -ldl -lpthread -lpthread -lcrypt -lstdc++ -L/home/kryuchkov/git/ngx_waf_ingress_controller/src/luajit/lib -lluajit-5.1 -lm -ldl -L/home/kryuchkov/git/ngx_waf_ingress_controller/src/luajit/lib -lluajit-5.1 -lm -ldl /home/kryuchkov/git/ngx_waf_ingress_controller/src/pcre-8.45/.libs/libpcre.a -lssl -lcrypto -ldl -lpthread -lz \
+	-L/home/kryuchkov/git/ngx_waf_ingress_controller/src/luajit/lib -L/home/kryuchkov/git/ngx_waf_ingress_controller/src/luajit/lib -L/usr/local/ssl/lib64 -L/usr/local/ssl/lib -L../ngx_brotli/deps/brotli/out -lbrotlienc -lmaxminddb -lbrotlicommon -lm -fPIE -fPIC -pie -Wl,-z,relro -Wl,-z,now -Wl,-E -Wl,-E -ldl -lpthread -lpthread -lcrypt -lstdc++ -L/home/kryuchkov/git/ngx_waf_ingress_controller/src/luajit/lib -lluajit-5.1 -lm -ldl -L/home/kryuchkov/git/ngx_waf_ingress_controller/src/luajit/lib -lluajit-5.1 -lm -ldl /home/kryuchkov/git/ngx_waf_ingress_controller/src/pcre-8.45/.libs/libpcre.a /home/kryuchkov/git/ngx_waf_ingress_controller/src/openssl-3.0.9/.openssl/lib/libssl.a /home/kryuchkov/git/ngx_waf_ingress_controller/src/openssl-3.0.9/.openssl/lib/libcrypto.a -ldl -lpthread -lz \
 	-Wl,-E
 	
 
@@ -3138,7 +3141,7 @@ objs/ngx_http_auth_digest_module.so:	objs/addon/nginx-http-auth-digest-1.0.0/ngx
 	$(LINK) -o objs/ngx_http_auth_digest_module.so \
 	objs/addon/nginx-http-auth-digest-1.0.0/ngx_http_auth_digest_module.o \
 	objs/ngx_http_auth_digest_module_modules.o \
-	-L/home/kryuchkov/git/ngx_waf_ingress_controller/src/luajit/lib -L/home/kryuchkov/git/ngx_waf_ingress_controller/src/luajit/lib -L../ngx_brotli/deps/brotli/out -lbrotlienc -lmaxminddb -lbrotlicommon -lm -fPIE -fPIC -pie -Wl,-z,relro -Wl,-z,now \
+	-L/home/kryuchkov/git/ngx_waf_ingress_controller/src/luajit/lib -L/home/kryuchkov/git/ngx_waf_ingress_controller/src/luajit/lib -L/usr/local/ssl/lib64 -L/usr/local/ssl/lib -L../ngx_brotli/deps/brotli/out -lbrotlienc -lmaxminddb -lbrotlicommon -lm -fPIE -fPIC -pie -Wl,-z,relro -Wl,-z,now \
 	-shared
 
 
@@ -3165,7 +3168,7 @@ objs/ngx_http_geoip2_module.so:	objs/addon/ngx_http_geoip2_module-3.4/ngx_http_g
 	$(LINK) -o objs/ngx_http_geoip2_module.so \
 	objs/addon/ngx_http_geoip2_module-3.4/ngx_http_geoip2_module.o \
 	objs/ngx_http_geoip2_module_modules.o \
-	-L/home/kryuchkov/git/ngx_waf_ingress_controller/src/luajit/lib -L/home/kryuchkov/git/ngx_waf_ingress_controller/src/luajit/lib -L../ngx_brotli/deps/brotli/out -lbrotlienc -lmaxminddb -lbrotlicommon -lm -fPIE -fPIC -pie -Wl,-z,relro -Wl,-z,now -lmaxminddb \
+	-L/home/kryuchkov/git/ngx_waf_ingress_controller/src/luajit/lib -L/home/kryuchkov/git/ngx_waf_ingress_controller/src/luajit/lib -L/usr/local/ssl/lib64 -L/usr/local/ssl/lib -L../ngx_brotli/deps/brotli/out -lbrotlienc -lmaxminddb -lbrotlicommon -lm -fPIE -fPIC -pie -Wl,-z,relro -Wl,-z,now -lmaxminddb \
 	-shared
 
 
@@ -3192,7 +3195,7 @@ objs/ngx_stream_geoip2_module.so:	objs/addon/ngx_http_geoip2_module-3.4/ngx_stre
 	$(LINK) -o objs/ngx_stream_geoip2_module.so \
 	objs/addon/ngx_http_geoip2_module-3.4/ngx_stream_geoip2_module.o \
 	objs/ngx_stream_geoip2_module_modules.o \
-	-L/home/kryuchkov/git/ngx_waf_ingress_controller/src/luajit/lib -L/home/kryuchkov/git/ngx_waf_ingress_controller/src/luajit/lib -L../ngx_brotli/deps/brotli/out -lbrotlienc -lmaxminddb -lbrotlicommon -lm -fPIE -fPIC -pie -Wl,-z,relro -Wl,-z,now -lmaxminddb \
+	-L/home/kryuchkov/git/ngx_waf_ingress_controller/src/luajit/lib -L/home/kryuchkov/git/ngx_waf_ingress_controller/src/luajit/lib -L/usr/local/ssl/lib64 -L/usr/local/ssl/lib -L../ngx_brotli/deps/brotli/out -lbrotlienc -lmaxminddb -lbrotlicommon -lm -fPIE -fPIC -pie -Wl,-z,relro -Wl,-z,now -lmaxminddb \
 	-shared
 
 
@@ -3219,7 +3222,7 @@ objs/ngx_http_brotli_filter_module.so:	objs/addon/filter/ngx_http_brotli_filter_
 	$(LINK) -o objs/ngx_http_brotli_filter_module.so \
 	objs/addon/filter/ngx_http_brotli_filter_module.o \
 	objs/ngx_http_brotli_filter_module_modules.o \
-	-L/home/kryuchkov/git/ngx_waf_ingress_controller/src/luajit/lib -L/home/kryuchkov/git/ngx_waf_ingress_controller/src/luajit/lib -L../ngx_brotli/deps/brotli/out -lbrotlienc -lmaxminddb -lbrotlicommon -lm -fPIE -fPIC -pie -Wl,-z,relro -Wl,-z,now -L/home/kryuchkov/git/ngx_waf_ingress_controller/src/ngx_brotli/deps/brotli/c/../out -lbrotlienc -lbrotlicommon -lm \
+	-L/home/kryuchkov/git/ngx_waf_ingress_controller/src/luajit/lib -L/home/kryuchkov/git/ngx_waf_ingress_controller/src/luajit/lib -L/usr/local/ssl/lib64 -L/usr/local/ssl/lib -L../ngx_brotli/deps/brotli/out -lbrotlienc -lmaxminddb -lbrotlicommon -lm -fPIE -fPIC -pie -Wl,-z,relro -Wl,-z,now -L/home/kryuchkov/git/ngx_waf_ingress_controller/src/ngx_brotli/deps/brotli/c/../out -lbrotlienc -lbrotlicommon -lm \
 	-shared
 
 
@@ -3246,7 +3249,7 @@ objs/ngx_http_brotli_static_module.so:	objs/addon/static/ngx_http_brotli_static_
 	$(LINK) -o objs/ngx_http_brotli_static_module.so \
 	objs/addon/static/ngx_http_brotli_static_module.o \
 	objs/ngx_http_brotli_static_module_modules.o \
-	-L/home/kryuchkov/git/ngx_waf_ingress_controller/src/luajit/lib -L/home/kryuchkov/git/ngx_waf_ingress_controller/src/luajit/lib -L../ngx_brotli/deps/brotli/out -lbrotlienc -lmaxminddb -lbrotlicommon -lm -fPIE -fPIC -pie -Wl,-z,relro -Wl,-z,now \
+	-L/home/kryuchkov/git/ngx_waf_ingress_controller/src/luajit/lib -L/home/kryuchkov/git/ngx_waf_ingress_controller/src/luajit/lib -L/usr/local/ssl/lib64 -L/usr/local/ssl/lib -L../ngx_brotli/deps/brotli/out -lbrotlienc -lmaxminddb -lbrotlicommon -lm -fPIE -fPIC -pie -Wl,-z,relro -Wl,-z,now \
 	-shared
 
 
@@ -3269,7 +3272,7 @@ objs/addon/static/ngx_http_brotli_static_module.o:	$(ADDON_DEPS) \
 /home/kryuchkov/git/ngx_waf_ingress_controller/src/pcre-8.45/Makefile:	objs/Makefile
 	cd /home/kryuchkov/git/ngx_waf_ingress_controller/src/pcre-8.45 \
 	&& if [ -f Makefile ]; then $(MAKE) distclean; fi \
-	&& CC="$(CC)" CFLAGS="-O2 -fomit-frame-pointer -pipe " \
+	&& CC="$(CC)" CFLAGS="" \
 	./configure --disable-shared  --enable-jit
 
 /home/kryuchkov/git/ngx_waf_ingress_controller/src/pcre-8.45/.libs/libpcre.a:	/home/kryuchkov/git/ngx_waf_ingress_controller/src/pcre-8.45/Makefile
@@ -3277,13 +3280,21 @@ objs/addon/static/ngx_http_brotli_static_module.o:	$(ADDON_DEPS) \
 	&& $(MAKE) libpcre.la
 
 
+/home/kryuchkov/git/ngx_waf_ingress_controller/src/openssl-3.0.9/.openssl/include/openssl/ssl.h:	objs/Makefile
+	cd /home/kryuchkov/git/ngx_waf_ingress_controller/src/openssl-3.0.9 \
+	&& if [ -f Makefile ]; then $(MAKE) clean; fi \
+	&& ./config --prefix=/home/kryuchkov/git/ngx_waf_ingress_controller/src/openssl-3.0.9/.openssl no-shared no-threads  \
+	&& $(MAKE) \
+	&& $(MAKE) install_sw LIBDIR=lib
+
+
 manpage:	objs/nginx.8
 
 objs/nginx.8:	man/nginx.8 objs/ngx_auto_config.h
 	sed -e "s|%%PREFIX%%||" \
 		-e "s|%%PID_PATH%%|/./nginx.pid|" \
-		-e "s|%%CONF_PATH%%|/home/kryuchkov/git/ngx_waf_ingress_controller/build/config/nginx.conf|" \
-		-e "s|%%ERROR_LOG_PATH%%|/home/kryuchkov/git/ngx_waf_ingress_controller/logs/error.log|" \
+		-e "s|%%CONF_PATH%%|/./nginx.conf|" \
+		-e "s|%%ERROR_LOG_PATH%%|/./logs/error.log|" \
 		< man/nginx.8 > $@
 
 install:	build 
@@ -3296,51 +3307,51 @@ install:	build
 			'$(DESTDIR)/sbin/nginx.old'
 	cp objs/nginx '$(DESTDIR)/sbin/nginx'
 
-	test -d '$(DESTDIR)/home/kryuchkov/git/ngx_waf_ingress_controller/build/config' \
-		|| mkdir -p '$(DESTDIR)/home/kryuchkov/git/ngx_waf_ingress_controller/build/config'
+	test -d '$(DESTDIR)/.' \
+		|| mkdir -p '$(DESTDIR)/.'
 
-	cp conf/koi-win '$(DESTDIR)/home/kryuchkov/git/ngx_waf_ingress_controller/build/config'
-	cp conf/koi-utf '$(DESTDIR)/home/kryuchkov/git/ngx_waf_ingress_controller/build/config'
-	cp conf/win-utf '$(DESTDIR)/home/kryuchkov/git/ngx_waf_ingress_controller/build/config'
+	cp conf/koi-win '$(DESTDIR)/.'
+	cp conf/koi-utf '$(DESTDIR)/.'
+	cp conf/win-utf '$(DESTDIR)/.'
 
-	test -f '$(DESTDIR)/home/kryuchkov/git/ngx_waf_ingress_controller/build/config/mime.types' \
-		|| cp conf/mime.types '$(DESTDIR)/home/kryuchkov/git/ngx_waf_ingress_controller/build/config'
-	cp conf/mime.types '$(DESTDIR)/home/kryuchkov/git/ngx_waf_ingress_controller/build/config/mime.types.default'
+	test -f '$(DESTDIR)/./mime.types' \
+		|| cp conf/mime.types '$(DESTDIR)/.'
+	cp conf/mime.types '$(DESTDIR)/./mime.types.default'
 
-	test -f '$(DESTDIR)/home/kryuchkov/git/ngx_waf_ingress_controller/build/config/fastcgi_params' \
-		|| cp conf/fastcgi_params '$(DESTDIR)/home/kryuchkov/git/ngx_waf_ingress_controller/build/config'
+	test -f '$(DESTDIR)/./fastcgi_params' \
+		|| cp conf/fastcgi_params '$(DESTDIR)/.'
 	cp conf/fastcgi_params \
-		'$(DESTDIR)/home/kryuchkov/git/ngx_waf_ingress_controller/build/config/fastcgi_params.default'
+		'$(DESTDIR)/./fastcgi_params.default'
 
-	test -f '$(DESTDIR)/home/kryuchkov/git/ngx_waf_ingress_controller/build/config/fastcgi.conf' \
-		|| cp conf/fastcgi.conf '$(DESTDIR)/home/kryuchkov/git/ngx_waf_ingress_controller/build/config'
-	cp conf/fastcgi.conf '$(DESTDIR)/home/kryuchkov/git/ngx_waf_ingress_controller/build/config/fastcgi.conf.default'
+	test -f '$(DESTDIR)/./fastcgi.conf' \
+		|| cp conf/fastcgi.conf '$(DESTDIR)/.'
+	cp conf/fastcgi.conf '$(DESTDIR)/./fastcgi.conf.default'
 
-	test -f '$(DESTDIR)/home/kryuchkov/git/ngx_waf_ingress_controller/build/config/uwsgi_params' \
-		|| cp conf/uwsgi_params '$(DESTDIR)/home/kryuchkov/git/ngx_waf_ingress_controller/build/config'
+	test -f '$(DESTDIR)/./uwsgi_params' \
+		|| cp conf/uwsgi_params '$(DESTDIR)/.'
 	cp conf/uwsgi_params \
-		'$(DESTDIR)/home/kryuchkov/git/ngx_waf_ingress_controller/build/config/uwsgi_params.default'
+		'$(DESTDIR)/./uwsgi_params.default'
 
-	test -f '$(DESTDIR)/home/kryuchkov/git/ngx_waf_ingress_controller/build/config/scgi_params' \
-		|| cp conf/scgi_params '$(DESTDIR)/home/kryuchkov/git/ngx_waf_ingress_controller/build/config'
+	test -f '$(DESTDIR)/./scgi_params' \
+		|| cp conf/scgi_params '$(DESTDIR)/.'
 	cp conf/scgi_params \
-		'$(DESTDIR)/home/kryuchkov/git/ngx_waf_ingress_controller/build/config/scgi_params.default'
+		'$(DESTDIR)/./scgi_params.default'
 
-	test -f '$(DESTDIR)/home/kryuchkov/git/ngx_waf_ingress_controller/build/config/nginx.conf' \
-		|| cp conf/nginx.conf '$(DESTDIR)/home/kryuchkov/git/ngx_waf_ingress_controller/build/config/nginx.conf'
-	cp conf/nginx.conf '$(DESTDIR)/home/kryuchkov/git/ngx_waf_ingress_controller/build/config/nginx.conf.default'
+	test -f '$(DESTDIR)/./nginx.conf' \
+		|| cp conf/nginx.conf '$(DESTDIR)/./nginx.conf'
+	cp conf/nginx.conf '$(DESTDIR)/./nginx.conf.default'
 
 	test -d '$(DESTDIR)/.' \
 		|| mkdir -p '$(DESTDIR)/.'
 
-	test -d '$(DESTDIR)/home/kryuchkov/git/ngx_waf_ingress_controller/logs' \
-		|| mkdir -p '$(DESTDIR)/home/kryuchkov/git/ngx_waf_ingress_controller/logs'
+	test -d '$(DESTDIR)/./logs' \
+		|| mkdir -p '$(DESTDIR)/./logs'
 
 	test -d '$(DESTDIR)/html' \
 		|| cp -R html '$(DESTDIR)'
 
-	test -d '$(DESTDIR)/home/kryuchkov/git/ngx_waf_ingress_controller/logs' \
-		|| mkdir -p '$(DESTDIR)/home/kryuchkov/git/ngx_waf_ingress_controller/logs'
+	test -d '$(DESTDIR)/./logs' \
+		|| mkdir -p '$(DESTDIR)/./logs'
 
 	test -d '$(DESTDIR)/./modules' \
 		|| mkdir -p '$(DESTDIR)/./modules'

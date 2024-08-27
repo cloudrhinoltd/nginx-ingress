@@ -27,6 +27,7 @@ uname -v = #1 SMP Thu Jan 11 04:09:03 UTC 2024
 /usr/bin/oslevel       = unknown
 /bin/universe          = unknown
 
+PATH: /usr/local/ssl/bin/
 PATH: /home/kryuchkov/.nvm/versions/node/v20.12.2/bin/
 PATH: /home/kryuchkov/.cargo/bin/
 PATH: /home/kryuchkov/.krew/bin/
@@ -47,7 +48,6 @@ PATH: /mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/
 PATH: /mnt/c/WINDOWS/System32/OpenSSH/
 PATH: /mnt/c/ProgramData/chocolatey/bin/
 PATH: /mnt/c/ProgramData/DockerDesktop/version-bin/
-PATH: /mnt/c/gradle/bin/
 PATH: /mnt/c/jdk/bin/
 PATH: /mnt/c/Program Files/nodejs/
 PATH: /mnt/c/Program Files/dotnet/
@@ -75,6 +75,7 @@ PATH: /mnt/c/Program Files/Docker/
 PATH: /mnt/c/Program Files/Docker/
 PATH: /mnt/c/Program Files/Docker/Docker/resources/bin/
 PATH: /mnt/c/Program Files/Go/bin/
+PATH: /mnt/c/gradle-8.10/bin/
 PATH: /mnt/c/Users/kryuc/AppData/Roaming/.dotnet/
 PATH: /mnt/c/WINDOWS/system32/config/systemprofile/AppData/Local/Microsoft/WindowsApps/
 PATH: /mnt/c/Users/kryuc/AppData/Local/Programs/Microsoft VS Code/bin/
@@ -180,27 +181,27 @@ cc: fatal error: no input files
 compilation terminated.
 configure:4414: $? = 1
 configure:4434: checking whether the C compiler works
-configure:4456: cc -O2 -fomit-frame-pointer -pipe    conftest.c  >&5
+configure:4456: cc   -L/usr/local/ssl/lib conftest.c  >&5
 configure:4460: $? = 0
 configure:4510: result: yes
 configure:4513: checking for C compiler default output file name
 configure:4515: result: a.out
 configure:4521: checking for suffix of executables
-configure:4528: cc -o conftest -O2 -fomit-frame-pointer -pipe    conftest.c  >&5
+configure:4528: cc -o conftest   -L/usr/local/ssl/lib conftest.c  >&5
 configure:4532: $? = 0
 configure:4555: result: 
 configure:4577: checking whether we are cross compiling
-configure:4585: cc -o conftest -O2 -fomit-frame-pointer -pipe    conftest.c  >&5
+configure:4585: cc -o conftest   -L/usr/local/ssl/lib conftest.c  >&5
 configure:4589: $? = 0
 configure:4596: ./conftest
 configure:4600: $? = 0
 configure:4588: result: no
 configure:4593: checking for suffix of object files
-configure:4616: cc -c -O2 -fomit-frame-pointer -pipe   conftest.c >&5
+configure:4616: cc -c   conftest.c >&5
 configure:4620: $? = 0
 configure:4642: result: o
 configure:4646: checking whether the compiler supports GNU C
-configure:4666: cc -c -O2 -fomit-frame-pointer -pipe   conftest.c >&5
+configure:4666: cc -c   conftest.c >&5
 configure:4666: $? = 0
 configure:4676: result: yes
 configure:4687: checking whether cc accepts -g
@@ -208,7 +209,7 @@ configure:4708: cc -c -g  conftest.c >&5
 configure:4708: $? = 0
 configure:4752: result: yes
 configure:4772: checking for cc option to enable C11 features
-configure:4787: cc  -c -O2 -fomit-frame-pointer -pipe   conftest.c >&5
+configure:4787: cc  -c   conftest.c >&5
 configure:4787: $? = 0
 configure:4805: result: none needed
 configure:4921: checking whether cc understands -c and -o together
@@ -223,7 +224,7 @@ configure:5161: checking for ar
 configure:5182: found /usr/bin/ar
 configure:5193: result: ar
 configure:5219: checking the archiver (ar) interface
-configure:5236: cc -c -O2 -fomit-frame-pointer -pipe   conftest.c >&5
+configure:5236: cc -c   conftest.c >&5
 configure:5236: $? = 0
 configure:5239: ar cru libconftest.a conftest.o >&5
 ar: `u' modifier ignored since `D' is the default (see `U')
@@ -324,45 +325,45 @@ configure:6688: result: gcc3
 configure:6747: g++ -c -O2  conftest.cpp >&5
 configure:6747: $? = 0
 configure:6766: checking for stdio.h
-configure:6766: cc -c -O2 -fomit-frame-pointer -pipe   conftest.c >&5
+configure:6766: cc -c   conftest.c >&5
 configure:6766: $? = 0
 configure:6766: result: yes
 configure:6766: checking for stdlib.h
-configure:6766: cc -c -O2 -fomit-frame-pointer -pipe   conftest.c >&5
+configure:6766: cc -c   conftest.c >&5
 configure:6766: $? = 0
 configure:6766: result: yes
 configure:6766: checking for string.h
-configure:6766: cc -c -O2 -fomit-frame-pointer -pipe   conftest.c >&5
+configure:6766: cc -c   conftest.c >&5
 configure:6766: $? = 0
 configure:6766: result: yes
 configure:6766: checking for inttypes.h
-configure:6766: cc -c -O2 -fomit-frame-pointer -pipe   conftest.c >&5
+configure:6766: cc -c   conftest.c >&5
 configure:6766: $? = 0
 configure:6766: result: yes
 configure:6766: checking for stdint.h
-configure:6766: cc -c -O2 -fomit-frame-pointer -pipe   conftest.c >&5
+configure:6766: cc -c   conftest.c >&5
 configure:6766: $? = 0
 configure:6766: result: yes
 configure:6766: checking for strings.h
-configure:6766: cc -c -O2 -fomit-frame-pointer -pipe   conftest.c >&5
+configure:6766: cc -c   conftest.c >&5
 configure:6766: $? = 0
 configure:6766: result: yes
 configure:6766: checking for sys/stat.h
-configure:6766: cc -c -O2 -fomit-frame-pointer -pipe   conftest.c >&5
+configure:6766: cc -c   conftest.c >&5
 configure:6766: $? = 0
 configure:6766: result: yes
 configure:6766: checking for sys/types.h
-configure:6766: cc -c -O2 -fomit-frame-pointer -pipe   conftest.c >&5
+configure:6766: cc -c   conftest.c >&5
 configure:6766: $? = 0
 configure:6766: result: yes
 configure:6766: checking for unistd.h
-configure:6766: cc -c -O2 -fomit-frame-pointer -pipe   conftest.c >&5
+configure:6766: cc -c   conftest.c >&5
 configure:6766: $? = 0
 configure:6766: result: yes
 configure:6791: checking for int64_t
-configure:6791: cc -c -O2 -fomit-frame-pointer -pipe   conftest.c >&5
+configure:6791: cc -c   conftest.c >&5
 configure:6791: $? = 0
-configure:6791: cc -c -O2 -fomit-frame-pointer -pipe   conftest.c >&5
+configure:6791: cc -c   conftest.c >&5
 conftest.c: In function 'main':
 conftest.c:54:53: warning: integer overflow in expression of type 'long int' results in '-9223372036854775808' [-Woverflow]
    54 |    < (int64_t) (((((int64_t) 1 << N) << N) - 1) * 2 + 2))];
@@ -454,7 +455,7 @@ configure:7730: result: yes
 configure:7742: checking for BSD- or MS-compatible name lister (nm)
 configure:7797: result: /usr/bin/nm -B
 configure:7937: checking the name lister (/usr/bin/nm -B) interface
-configure:7945: cc -c -O2 -fomit-frame-pointer -pipe   conftest.c >&5
+configure:7945: cc -c   conftest.c >&5
 configure:7948: /usr/bin/nm -B "conftest.o"
 configure:7951: output
 0000000000000000 B some_variable
@@ -478,7 +479,7 @@ configure:8694: result: dlltool
 configure:8724: checking how to associate runtime and link libraries
 configure:8752: result: printf %s\n
 configure:8902: checking for archiver @FILE support
-configure:8920: cc -c -O2 -fomit-frame-pointer -pipe   conftest.c >&5
+configure:8920: cc -c   conftest.c >&5
 configure:8920: $? = 0
 configure:8924: ar cr libconftest.a @conftest.lst >&5
 configure:8927: $? = 0
@@ -493,11 +494,11 @@ configure:9106: checking for ranlib
 configure:9127: found /usr/bin/ranlib
 configure:9138: result: ranlib
 configure:9240: checking command to parse /usr/bin/nm -B output from cc object
-configure:9394: cc -c -O2 -fomit-frame-pointer -pipe   conftest.c >&5
+configure:9394: cc -c   conftest.c >&5
 configure:9397: $? = 0
 configure:9401: /usr/bin/nm -B conftest.o \| sed -n -e 's/^.*[ ]\([ABCDGIRSTW][ABCDGIRSTW]*\)[ ][ ]*\([_A-Za-z][_A-Za-z0-9]*\)$/\1 \2 \2/p' | sed '/ __gnu_lto/d' \> conftest.nm
 configure:9404: $? = 0
-configure:9470: cc -o conftest -O2 -fomit-frame-pointer -pipe    conftest.c conftstm.o >&5
+configure:9470: cc -o conftest   -L/usr/local/ssl/lib conftest.c conftstm.o >&5
 configure:9473: $? = 0
 configure:9511: result: ok
 configure:9558: checking for sysroot
@@ -506,7 +507,7 @@ configure:9596: checking for a working dd
 configure:9640: result: /usr/bin/dd
 configure:9644: checking how to truncate binary pipes
 configure:9660: result: /usr/bin/dd bs=4096 count=1
-configure:9797: cc -c -O2 -fomit-frame-pointer -pipe   conftest.c >&5
+configure:9797: cc -c   conftest.c >&5
 configure:9800: $? = 0
 configure:9997: checking for mt
 configure:10018: found /usr/bin/mt
@@ -515,26 +516,26 @@ configure:10052: checking if mt is a manifest tool
 configure:10059: mt '-?'
 configure:10067: result: no
 configure:10793: checking for dlfcn.h
-configure:10793: cc -c -O2 -fomit-frame-pointer -pipe   conftest.c >&5
+configure:10793: cc -c   conftest.c >&5
 configure:10793: $? = 0
 configure:10793: result: yes
 configure:11060: checking for objdir
 configure:11076: result: .libs
 configure:11340: checking if cc supports -fno-rtti -fno-exceptions
-configure:11359: cc -c -O2 -fomit-frame-pointer -pipe   -fno-rtti -fno-exceptions conftest.c >&5
+configure:11359: cc -c   -fno-rtti -fno-exceptions conftest.c >&5
 cc1: warning: command line option '-fno-rtti' is valid for C++/D/ObjC++ but not for C
 configure:11363: $? = 0
 configure:11376: result: no
 configure:11734: checking for cc option to produce PIC
 configure:11742: result: -fPIC -DPIC
 configure:11750: checking if cc PIC flag -fPIC -DPIC works
-configure:11769: cc -c -O2 -fomit-frame-pointer -pipe   -fPIC -DPIC -DPIC conftest.c >&5
+configure:11769: cc -c   -fPIC -DPIC -DPIC conftest.c >&5
 configure:11773: $? = 0
 configure:11786: result: yes
 configure:11815: checking if cc static flag -static works
 configure:11844: result: yes
 configure:11859: checking if cc supports -c -o file.o
-configure:11881: cc -c -O2 -fomit-frame-pointer -pipe   -o out/conftest2.o conftest.c >&5
+configure:11881: cc -c   -o out/conftest2.o conftest.c >&5
 configure:11885: $? = 0
 configure:11907: result: yes
 configure:11915: checking if cc supports -c -o file.o
@@ -542,7 +543,7 @@ configure:11963: result: yes
 configure:11996: checking whether the cc linker (/usr/bin/ld -m elf_x86_64) supports shared libraries
 configure:13264: result: yes
 configure:13505: checking dynamic linker characteristics
-configure:14087: cc -o conftest -O2 -fomit-frame-pointer -pipe    -Wl,-rpath -Wl,/foo conftest.c  >&5
+configure:14087: cc -o conftest   -L/usr/local/ssl/lib -Wl,-rpath -Wl,/foo conftest.c  >&5
 configure:14087: $? = 0
 configure:14326: result: GNU/Linux ld.so
 configure:14448: checking how to hardcode library paths into programs
@@ -652,17 +653,17 @@ configure:15168: result: immediate
 configure:14070: checking whether ln -s works
 configure:14074: result: yes
 configure:14090: checking whether the -Werror option is usable
-configure:14110: cc -c -O2 -fomit-frame-pointer -pipe  -Werror  conftest.c >&5
+configure:14110: cc -c  -Werror  conftest.c >&5
 configure:14110: $? = 0
 configure:14120: result: yes
 configure:14122: checking for simple visibility declarations
-configure:14150: cc -c -O2 -fomit-frame-pointer -pipe  -fvisibility=hidden -Werror  conftest.c >&5
+configure:14150: cc -c  -fvisibility=hidden -Werror  conftest.c >&5
 configure:14150: $? = 0
 configure:14160: result: yes
 configure:14691: checking for egrep
 configure:14759: result: /usr/bin/grep -E
 configure:14765: checking for limits.h
-configure:14765: cc -c -O2 -fomit-frame-pointer -pipe   conftest.c >&5
+configure:14765: cc -c   conftest.c >&5
 configure:14765: $? = 0
 configure:14765: result: yes
 configure:14771: checking for sys/types.h
@@ -670,11 +671,11 @@ configure:14771: result: yes
 configure:14777: checking for sys/stat.h
 configure:14777: result: yes
 configure:14783: checking for dirent.h
-configure:14783: cc -c -O2 -fomit-frame-pointer -pipe   conftest.c >&5
+configure:14783: cc -c   conftest.c >&5
 configure:14783: $? = 0
 configure:14783: result: yes
 configure:14792: checking for windows.h
-configure:14792: cc -c -O2 -fomit-frame-pointer -pipe   conftest.c >&5
+configure:14792: cc -c   conftest.c >&5
 conftest.c:63:10: fatal error: windows.h: No such file or directory
    63 | #include <windows.h>
       |          ^~~~~~~~~~~
@@ -746,7 +747,7 @@ configure: failed program was:
 | #include <windows.h>
 configure:14792: result: no
 configure:14826: checking for alias support in the linker
-configure:14845: g++ -o conftest -O2   -Wl,-alias,__ZN7pcrecpp2RE6no_argE,__ZN7pcrecpp6no_argE conftest.cpp  >&5
+configure:14845: g++ -o conftest -O2  -L/usr/local/ssl/lib -Wl,-alias,__ZN7pcrecpp2RE6no_argE,__ZN7pcrecpp6no_argE conftest.cpp  >&5
 /usr/bin/ld: unrecognized -a option `lias'
 collect2: error: ld returned 1 exit status
 configure:14845: $? = 1
@@ -798,7 +799,7 @@ configure: failed program was:
 | }
 configure:14852: result: no
 configure:14826: checking for alias support in the linker
-configure:14845: g++ -o conftest -O2   -Wl,-i__ZN7pcrecpp6no_argE:__ZN7pcrecpp2RE6no_argE conftest.cpp  >&5
+configure:14845: g++ -o conftest -O2  -L/usr/local/ssl/lib -Wl,-i__ZN7pcrecpp6no_argE:__ZN7pcrecpp2RE6no_argE conftest.cpp  >&5
 /usr/bin/ld: unrecognised option: -i__ZN7pcrecpp6no_argE:__ZN7pcrecpp2RE6no_argE
 collect2: error: ld returned 1 exit status
 configure:14845: $? = 1
@@ -1207,13 +1208,13 @@ configure: failed program was:
 | }
 configure:14961: result: yes
 configure:15058: checking for an ANSI C-conforming const
-configure:15125: cc -c -O2 -fomit-frame-pointer -pipe   conftest.c >&5
+configure:15125: cc -c   conftest.c >&5
 configure:15125: $? = 0
 configure:15133: result: yes
 configure:15141: checking for size_t
-configure:15141: cc -c -O2 -fomit-frame-pointer -pipe   conftest.c >&5
+configure:15141: cc -c   conftest.c >&5
 configure:15141: $? = 0
-configure:15141: cc -c -O2 -fomit-frame-pointer -pipe   conftest.c >&5
+configure:15141: cc -c   conftest.c >&5
 conftest.c: In function 'main':
 conftest.c:70:21: error: expected expression before ')' token
    70 | if (sizeof ((size_t)))
@@ -1296,14 +1297,14 @@ configure: failed program was:
 | }
 configure:15141: result: yes
 configure:15154: checking for bcopy
-configure:15154: cc -o conftest -O2 -fomit-frame-pointer -pipe    conftest.c  >&5
+configure:15154: cc -o conftest   -L/usr/local/ssl/lib conftest.c  >&5
 conftest.c:55:6: warning: conflicting types for built-in function 'bcopy'; expected 'void(const void *, void *, long unsigned int)' [-Wbuiltin-declaration-mismatch]
    55 | char bcopy ();
       |      ^~~~~
 configure:15154: $? = 0
 configure:15154: result: yes
 configure:15160: checking for memmove
-configure:15160: cc -o conftest -O2 -fomit-frame-pointer -pipe    conftest.c  >&5
+configure:15160: cc -o conftest   -L/usr/local/ssl/lib conftest.c  >&5
 conftest.c:56:6: warning: conflicting types for built-in function 'memmove'; expected 'void *(void *, const void *, long unsigned int)' [-Wbuiltin-declaration-mismatch]
    56 | char memmove ();
       |      ^~~~~~~
@@ -1313,19 +1314,19 @@ conftest.c:48:1: note: 'memmove' is declared in header '<string.h>'
 configure:15160: $? = 0
 configure:15160: result: yes
 configure:15166: checking for strerror
-configure:15166: cc -o conftest -O2 -fomit-frame-pointer -pipe    conftest.c  >&5
+configure:15166: cc -o conftest   -L/usr/local/ssl/lib conftest.c  >&5
 configure:15166: $? = 0
 configure:15166: result: yes
 configure:15178: checking for zlib.h
-configure:15178: cc -c -O2 -fomit-frame-pointer -pipe   conftest.c >&5
+configure:15178: cc -c   conftest.c >&5
 configure:15178: $? = 0
 configure:15178: result: yes
 configure:15186: checking for gzopen in -lz
-configure:15209: cc -o conftest -O2 -fomit-frame-pointer -pipe    conftest.c -lz   >&5
+configure:15209: cc -o conftest   -L/usr/local/ssl/lib conftest.c -lz   >&5
 configure:15209: $? = 0
 configure:15219: result: yes
 configure:15245: checking for bzlib.h
-configure:15245: cc -c -O2 -fomit-frame-pointer -pipe   conftest.c >&5
+configure:15245: cc -c   conftest.c >&5
 conftest.c:71:10: fatal error: bzlib.h: No such file or directory
    71 | #include <bzlib.h>
       |          ^~~~~~~~~
@@ -1405,7 +1406,7 @@ configure: failed program was:
 | #include <bzlib.h>
 configure:15245: result: no
 configure:15258: checking for libbz2
-configure:15276: cc -o conftest -O2 -fomit-frame-pointer -pipe    conftest.c  -lbz2 >&5
+configure:15276: cc -o conftest   -L/usr/local/ssl/lib conftest.c  -lbz2 >&5
 conftest.c: In function 'main':
 conftest.c:50:13: warning: implicit declaration of function 'BZ2_bzopen' [-Wimplicit-function-declaration]
    50 | return (int)BZ2_bzopen("conftest", "rb");
@@ -1469,7 +1470,7 @@ configure: failed program was:
 | }
 configure:15281: result: no
 configure:15857: checking for the pthreads library -lpthreads
-configure:15895: cc -o conftest -O2 -fomit-frame-pointer -pipe     conftest.c -lpthreads  >&5
+configure:15895: cc -o conftest    -L/usr/local/ssl/lib conftest.c -lpthreads  >&5
 /usr/bin/ld: cannot find -lpthreads
 collect2: error: ld returned 1 exit status
 configure:15895: $? = 1
@@ -1535,12 +1536,12 @@ configure: failed program was:
 | }
 configure:15905: result: no
 configure:15797: checking whether pthreads work without any flags
-configure:15895: cc -o conftest -O2 -fomit-frame-pointer -pipe     conftest.c   >&5
-/usr/bin/ld: /tmp/cchEk0Zz.o: in function `main':
-conftest.c:(.text.startup+0x30): undefined reference to `pthread_create'
-/usr/bin/ld: conftest.c:(.text.startup+0x3c): undefined reference to `pthread_join'
-/usr/bin/ld: conftest.c:(.text.startup+0x67): undefined reference to `__pthread_register_cancel'
-/usr/bin/ld: conftest.c:(.text.startup+0x6f): undefined reference to `__pthread_unregister_cancel'
+configure:15895: cc -o conftest    -L/usr/local/ssl/lib conftest.c   >&5
+/usr/bin/ld: /tmp/ccRu5sbC.o: in function `main':
+conftest.c:(.text+0x63): undefined reference to `pthread_create'
+/usr/bin/ld: conftest.c:(.text+0x77): undefined reference to `pthread_join'
+/usr/bin/ld: conftest.c:(.text+0xf2): undefined reference to `__pthread_register_cancel'
+/usr/bin/ld: conftest.c:(.text+0xfe): undefined reference to `__pthread_unregister_cancel'
 collect2: error: ld returned 1 exit status
 configure:15895: $? = 1
 configure: failed program was:
@@ -1605,7 +1606,7 @@ configure: failed program was:
 | }
 configure:15905: result: no
 configure:15802: checking whether pthreads work with -Kthread
-configure:15895: cc -o conftest -O2 -fomit-frame-pointer -pipe  -Kthread   conftest.c   >&5
+configure:15895: cc -o conftest  -Kthread  -L/usr/local/ssl/lib conftest.c   >&5
 cc: error: unrecognized command line option '-Kthread'; did you mean '-pthread'?
 configure:15895: $? = 1
 configure: failed program was:
@@ -1670,7 +1671,7 @@ configure: failed program was:
 | }
 configure:15905: result: no
 configure:15802: checking whether pthreads work with -kthread
-configure:15895: cc -o conftest -O2 -fomit-frame-pointer -pipe  -kthread   conftest.c   >&5
+configure:15895: cc -o conftest  -kthread  -L/usr/local/ssl/lib conftest.c   >&5
 cc: error: unrecognized command line option '-kthread'; did you mean '-pthread'?
 configure:15895: $? = 1
 configure: failed program was:
@@ -1735,7 +1736,7 @@ configure: failed program was:
 | }
 configure:15905: result: no
 configure:15857: checking for the pthreads library -llthread
-configure:15895: cc -o conftest -O2 -fomit-frame-pointer -pipe     conftest.c -llthread  >&5
+configure:15895: cc -o conftest    -L/usr/local/ssl/lib conftest.c -llthread  >&5
 /usr/bin/ld: cannot find -llthread
 collect2: error: ld returned 1 exit status
 configure:15895: $? = 1
@@ -1801,17 +1802,17 @@ configure: failed program was:
 | }
 configure:15905: result: no
 configure:15802: checking whether pthreads work with -pthread
-configure:15895: cc -o conftest -O2 -fomit-frame-pointer -pipe  -pthread   conftest.c   >&5
+configure:15895: cc -o conftest  -pthread  -L/usr/local/ssl/lib conftest.c   >&5
 configure:15895: $? = 0
 configure:15905: result: yes
 configure:15924: checking for joinable pthread attribute
-configure:15939: cc -o conftest -O2 -fomit-frame-pointer -pipe  -pthread   conftest.c   >&5
+configure:15939: cc -o conftest  -pthread  -L/usr/local/ssl/lib conftest.c   >&5
 configure:15939: $? = 0
 configure:15946: result: PTHREAD_CREATE_JOINABLE
 configure:15954: checking if more special flags are required for pthreads
 configure:15968: result: no
 configure:15974: checking for PTHREAD_PRIO_INHERIT
-configure:15993: cc -o conftest -O2 -fomit-frame-pointer -pipe  -pthread   conftest.c   >&5
+configure:15993: cc -o conftest  -pthread  -L/usr/local/ssl/lib conftest.c   >&5
 configure:15993: $? = 0
 configure:16003: result: yes
 configure:16852: checking that generated files are newer than configure
@@ -1867,7 +1868,7 @@ ac_cv_env_CCC_value=
 ac_cv_env_CC_set=set
 ac_cv_env_CC_value=cc
 ac_cv_env_CFLAGS_set=set
-ac_cv_env_CFLAGS_value='-O2 -fomit-frame-pointer -pipe '
+ac_cv_env_CFLAGS_value=
 ac_cv_env_CPPFLAGS_set=
 ac_cv_env_CPPFLAGS_value=
 ac_cv_env_CXXCPP_set=
@@ -1880,8 +1881,8 @@ ac_cv_env_GENHTML_set=
 ac_cv_env_GENHTML_value=
 ac_cv_env_LCOV_set=
 ac_cv_env_LCOV_value=
-ac_cv_env_LDFLAGS_set=
-ac_cv_env_LDFLAGS_value=
+ac_cv_env_LDFLAGS_set=set
+ac_cv_env_LDFLAGS_value=-L/usr/local/ssl/lib
 ac_cv_env_LIBS_set=
 ac_cv_env_LIBS_value=
 ac_cv_env_LT_SYS_LIBRARY_PATH_set=
@@ -2017,7 +2018,7 @@ AUTOMAKE='${SHELL} '\''/home/kryuchkov/git/ngx_waf_ingress_controller/src/pcre-8
 AWK='gawk'
 CC='cc'
 CCDEPMODE='depmode=gcc3'
-CFLAGS='-pthread -O2 -fomit-frame-pointer -pipe '
+CFLAGS='-pthread '
 CPPFLAGS=''
 CXX='g++'
 CXXCPP='g++ -E'
@@ -2053,7 +2054,7 @@ INSTALL_SCRIPT='${INSTALL}'
 INSTALL_STRIP_PROGRAM='$(install_sh) -c -s'
 LCOV=''
 LD='/usr/bin/ld -m elf_x86_64'
-LDFLAGS=''
+LDFLAGS='-L/usr/local/ssl/lib'
 LIBBZ2=''
 LIBOBJS=''
 LIBREADLINE=''

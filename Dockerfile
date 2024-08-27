@@ -24,9 +24,9 @@ FROM ubuntu:24.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Step 2: Install necessary runtime dependencies
+# Step 2: Install necessary runtime dependencies including OpenSSL 3
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    libssl3 \
+    libssl-dev \
     libpcre3 \
     zlib1g \
     libstdc++6 \
@@ -40,9 +40,17 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     sudo \
     vim \
     net-tools \
-    openssl \
     ca-certificates \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && wget https://www.openssl.org/source/openssl-3.0.8.tar.gz -O /tmp/openssl.tar.gz \
+    && tar -xzf /tmp/openssl.tar.gz -C /tmp \
+    && cd /tmp/openssl-3.0.8 \
+    && ./config --prefix=/usr/local/openssl --openssldir=/usr/local/openssl \
+    && make -j$(nproc) \
+    && make install \
+    && rm -rf /tmp/openssl* \
+    && ln -sf /usr/local/openssl/bin/openssl /usr/bin/openssl \
+    && ldconfig
 
 # Step 3: Set the working directory
 WORKDIR /etc/nginx
@@ -53,6 +61,7 @@ RUN groupadd -g 82 www-data-group && usermod -u 101 -g 82 www-data
 # Step 5: Copy the Ingress NGINX controller binaries
 COPY build/nginx-ingress-controller /usr/local/bin/nginx-ingress-controller
 COPY build/wait-shutdown /usr/local/bin/wait-shutdown
+COPY build/dbg /usr/local/bin/dbg
 
 # Step 6: Ensure that the custom NGINX binary is used in place of the default
 RUN ln -sf /usr/local/nginx/sbin/nginx /usr/bin/nginx && mkdir -p /etc/ingress-controller && chown -R www-data:www-data /etc/ingress-controller
@@ -64,24 +73,26 @@ RUN mkdir -p /tmp/mimalloc && cd /tmp/mimalloc \
     && mkdir -p out/release && cd out/release \
     && cmake ../.. -DMI_INSTALL_TOP=/usr/local \
     && make && make install \
-    && rm -rf /tmp/mimalloc && ldconfig
+    && rm -rf /tmp/mimalloc && ldconfig \
+    && mkdir -p /etc/ingress-controller/telemetry
 
 # Step 8: Setup NGINX and required directories
+COPY snippets/waf_location_snippet.conf /etc/nginx/snippets/
+COPY ./src/ingress-nginx/rootfs/etc/nginx /etc/nginx
+COPY ./telemetry /etc/ingress-controller/telemetry
 COPY build/nginx /usr/local/nginx/sbin/nginx
-COPY build/config/nginx.conf /etc/nginx/build/config/nginx.conf
+COPY ./src/ingress-nginx/rootfs/etc/nginx /etc/nginx
 COPY build/config/nginx.conf /etc/nginx/nginx.conf
 COPY src/nginx-1.27.1/conf/mime.types /etc/nginx/mime.types
-COPY src/nginx-1.27.1/conf/mime.types /etc/nginx/build/config/mime.types
-COPY build/geoip /etc/nginx/build/geoip
+COPY build/geoip /etc/nginx/geoip
 COPY src/luajit /etc/luajit
 COPY src/luajit/share/lua/5.1/resty /etc/nginx/lua/resty
 
 RUN mkdir -p /etc/ingress-controller/auth \
     && mkdir -p /etc/ingress-controller/ssl \
     && mkdir -p /etc/nginx/logs \
+    && mkdir -p /etc/nginx/snippets \
     && mkdir -p /etc/nginx/temp \
-    && chown -R www-data:www-data /etc/nginx \
-    && chown -R www-data:www-data /etc/ingress-controller \
     && chmod -R 755 /etc/ingress-controller \
     && chmod -R 755 /etc/nginx \
     && mkdir -p /etc/nginx/client_temp \
@@ -91,14 +102,18 @@ RUN mkdir -p /etc/ingress-controller/auth \
     && mkdir -p /etc/nginx/scgi_temp \
     && mkdir -p /var/log/nginx \
     && chown -R www-data:www-data /var/log/nginx \
-    && chmod -R 755 /var/log/nginx 
+    && chmod -R 755 /var/log/nginx \
+    && mkdir -p /tmp/nginx \
+    && chown -R www-data:www-data /tmp/nginx
 
 RUN mkdir -p /etc/nginx/html \
     && echo "<html><body><h1>CLRH NGINX WAF Module Test</h1></body></html>" > "/etc/nginx/html/index.html"
 
 # Step 9: Ensure the symlink for the controller and set correct ownership
 RUN ln -s /usr/local/bin/nginx-ingress-controller /nginx-ingress-controller \
-    && chown www-data:www-data /nginx-ingress-controller
+    && chown www-data:www-data /nginx-ingress-controller \
+    && chown -R www-data:www-data /etc/nginx \
+    && chown -R www-data:www-data /etc/ingress-controller 
 
 # Step 10: Set the user to www-data (place this after system package installations)
 USER www-data
@@ -106,6 +121,9 @@ USER www-data
 ENV LD_LIBRARY_PATH="/etc/luajit/lib:$LD_LIBRARY_PATH"
 ENV LUA_PATH="/etc/luajit/share/lua/5.1/?.lua;/etc/luajit/share/lua/5.1/?/init.lua"
 ENV LUA_CPATH="/etc/luajit/lib/lua/5.1/?.so"
+
+# Use sed to append the WAF include line to each location block
+RUN sed -i '/location {/a\ \ \ \ \ \ \ \ # Include Cloud Rhino WAF configuration for this location\n\ \ \ \ \ \ \ \ include /etc/nginx/snippets/waf_location_snippet.conf;' /etc/nginx/template/nginx.tmpl
 
 # Step 11: Expose the necessary ports (80 and 443)
 EXPOSE 80 443

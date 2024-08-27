@@ -845,7 +845,7 @@ AUTOMAKE = ${SHELL} '/home/kryuchkov/git/ngx_waf_ingress_controller/src/pcre-8.4
 AWK = gawk
 CC = cc
 CCDEPMODE = depmode=gcc3
-CFLAGS = -pthread -O2 -fomit-frame-pointer -pipe 
+CFLAGS = -pthread 
 CPPFLAGS = 
 CXX = g++
 CXXCPP = g++ -E
@@ -882,7 +882,7 @@ INSTALL_SCRIPT = ${INSTALL}
 INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
 LCOV = 
 LD = /usr/bin/ld -m elf_x86_64
-LDFLAGS = 
+LDFLAGS = -L/usr/local/ssl/lib
 LIBBZ2 = 
 LIBOBJS = 
 LIBREADLINE = 

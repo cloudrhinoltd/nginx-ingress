@@ -1,12 +1,7 @@
-#define NGX_CONFIGURE " --prefix= --conf-path=/home/kryuchkov/git/ngx_waf_ingress_controller/build/config/nginx.conf --error-log-path=/home/kryuchkov/git/ngx_waf_ingress_controller/logs/error.log --http-log-path=/home/kryuchkov/git/ngx_waf_ingress_controller/logs/access.log --pid-path=./nginx.pid --lock-path=./nginx.lock --modules-path=./modules --http-client-body-temp-path=/home/kryuchkov/git/ngx_waf_ingress_controller/build/temp/client_body_temp --http-proxy-temp-path=/home/kryuchkov/git/ngx_waf_ingress_controller/build/temp/proxy_temp --http-fastcgi-temp-path=/home/kryuchkov/git/ngx_waf_ingress_controller/build/temp/fastcgi_temp --http-uwsgi-temp-path=/home/kryuchkov/git/ngx_waf_ingress_controller/build/temp/uwsgi_temp --http-scgi-temp-path=/home/kryuchkov/git/ngx_waf_ingress_controller/build/temp/scgi_temp --with-debug --with-compat --with-pcre-jit --with-http_ssl_module --with-http_stub_status_module --with-http_realip_module --with-http_auth_request_module --with-http_addition_module --with-http_gzip_static_module --with-http_sub_module --with-http_v2_module --with-http_v3_module --with-stream --with-stream_ssl_module --with-stream_realip_module --with-stream_ssl_preread_module --with-threads --with-http_secure_link_module --with-http_gunzip_module --with-file-aio --without-mail_pop3_module --without-mail_smtp_module --without-mail_imap_module --http-proxy-temp-path=./temp/proxy_temp --http-fastcgi-temp-path=./temp/fastcgi_temp --http-uwsgi-temp-path=./temp/uwsgi_temp --http-scgi-temp-path=./temp/scgi_temp --with-cc-opt='-I/usr/local/include -I/usr/include/openssl -I/usr/include/pcre -I$LUAJIT_INSTALL_DIR/include/luajit-2.1 -DNGX_HTTP_HEADERS -g -O2 -fPIE -fstack-protector-strong -Wformat -Werror=format-security -Wno-deprecated-declarations -fno-strict-aliasing -D_FORTIFY_SOURCE=2 --param=ssp-buffer-size=4 -DTCP_FASTOPEN=23 -fPIC -Wno-cast-function-type -m64 -mtune=generic' --with-ld-opt='-L../ngx_brotli/deps/brotli/out -lbrotlienc -lmaxminddb -lbrotlicommon -lm -fPIE -fPIC -pie -Wl,-z,relro -Wl,-z,now' --user=www-data --group=www-data --add-module=/home/kryuchkov/git/ngx_waf_ingress_controller/../ngx-waf-protect/ngx_http_waf_module --add-module=/home/kryuchkov/git/ngx_waf_ingress_controller/src/ngx_devel_kit-0.3.1 --add-module=/home/kryuchkov/git/ngx_waf_ingress_controller/src/set-misc-nginx-module-0.33 --add-module=/home/kryuchkov/git/ngx_waf_ingress_controller/src/headers-more-nginx-module-0.37 --add-module=/home/kryuchkov/git/ngx_waf_ingress_controller/src/ngx_http_substitutions_filter_module-0.6.4 --add-module=/home/kryuchkov/git/ngx_waf_ingress_controller/src/lua-nginx-module-0.10.27 --add-module=/home/kryuchkov/git/ngx_waf_ingress_controller/src/stream-lua-nginx-module-0.0.15 --add-module=/home/kryuchkov/git/ngx_waf_ingress_controller/src/lua-upstream-nginx-module-0.07 --add-dynamic-module=/home/kryuchkov/git/ngx_waf_ingress_controller/src/nginx-http-auth-digest-1.0.0 --add-dynamic-module=/home/kryuchkov/git/ngx_waf_ingress_controller/src/ngx_http_geoip2_module-3.4 --add-dynamic-module=/home/kryuchkov/git/ngx_waf_ingress_controller/src/ngx_brotli --with-pcre=/home/kryuchkov/git/ngx_waf_ingress_controller/src/pcre-8.45 --with-pcre-jit --with-http_ssl_module --with-threads --with-http_v2_module"
+#define NGX_CONFIGURE " --prefix= --conf-path=./nginx.conf --error-log-path=./logs/error.log --http-log-path=./logs/access.log --pid-path=./nginx.pid --lock-path=./nginx.lock --modules-path=./modules --http-client-body-temp-path=/home/kryuchkov/git/ngx_waf_ingress_controller/build/temp/client_body_temp --http-proxy-temp-path=/home/kryuchkov/git/ngx_waf_ingress_controller/build/temp/proxy_temp --http-fastcgi-temp-path=/home/kryuchkov/git/ngx_waf_ingress_controller/build/temp/fastcgi_temp --http-uwsgi-temp-path=/home/kryuchkov/git/ngx_waf_ingress_controller/build/temp/uwsgi_temp --http-scgi-temp-path=/home/kryuchkov/git/ngx_waf_ingress_controller/build/temp/scgi_temp --with-debug --with-compat --with-pcre-jit --with-http_ssl_module --with-http_stub_status_module --with-http_realip_module --with-http_auth_request_module --with-http_addition_module --with-http_gzip_static_module --with-http_sub_module --with-http_v2_module --with-http_v3_module --with-stream --with-stream_ssl_module --with-stream_realip_module --with-stream_ssl_preread_module --with-threads --with-http_secure_link_module --with-http_gunzip_module --with-file-aio --without-mail_pop3_module --without-mail_smtp_module --without-mail_imap_module --http-proxy-temp-path=./temp/proxy_temp --http-fastcgi-temp-path=./temp/fastcgi_temp --http-uwsgi-temp-path=./temp/uwsgi_temp --http-scgi-temp-path=./temp/scgi_temp --with-cc-opt='-I/usr/local/ssl/include -I/usr/include/pcre -I/home/kryuchkov/git/ngx_waf_ingress_controller/src/luajit/include/luajit-2.1 -DNGX_HTTP_HEADERS -g -O2 -fPIE -fstack-protector-strong -Wformat -Werror=format-security -Wno-deprecated-declarations -fno-strict-aliasing -D_FORTIFY_SOURCE=2 --param=ssp-buffer-size=4 -DTCP_FASTOPEN=23 -fPIC -Wno-cast-function-type -m64 -mtune=generic' --with-ld-opt='-L/usr/local/ssl/lib64 -L/usr/local/ssl/lib -L../ngx_brotli/deps/brotli/out -lbrotlienc -lmaxminddb -lbrotlicommon -lm -fPIE -fPIC -pie -Wl,-z,relro -Wl,-z,now' --with-openssl=/home/kryuchkov/git/ngx_waf_ingress_controller/src/openssl-3.0.9 --user=www-data --group=www-data --add-module=/home/kryuchkov/git/ngx_waf_ingress_controller/../ngx-waf-protect/ngx_http_waf_module --add-module=/home/kryuchkov/git/ngx_waf_ingress_controller/src/ngx_devel_kit-0.3.1 --add-module=/home/kryuchkov/git/ngx_waf_ingress_controller/src/set-misc-nginx-module-0.33 --add-module=/home/kryuchkov/git/ngx_waf_ingress_controller/src/headers-more-nginx-module-0.37 --add-module=/home/kryuchkov/git/ngx_waf_ingress_controller/src/ngx_http_substitutions_filter_module-0.6.4 --add-module=/home/kryuchkov/git/ngx_waf_ingress_controller/src/lua-nginx-module-0.10.27 --add-module=/home/kryuchkov/git/ngx_waf_ingress_controller/src/stream-lua-nginx-module-0.0.15 --add-module=/home/kryuchkov/git/ngx_waf_ingress_controller/src/lua-upstream-nginx-module-0.07 --add-dynamic-module=/home/kryuchkov/git/ngx_waf_ingress_controller/src/nginx-http-auth-digest-1.0.0 --add-dynamic-module=/home/kryuchkov/git/ngx_waf_ingress_controller/src/ngx_http_geoip2_module-3.4 --add-dynamic-module=/home/kryuchkov/git/ngx_waf_ingress_controller/src/ngx_brotli --with-pcre=/home/kryuchkov/git/ngx_waf_ingress_controller/src/pcre-8.45 --with-pcre-jit --with-http_ssl_module --with-threads --with-http_v2_module"
 
 #ifndef NGX_DEBUG
 #define NGX_DEBUG  1
-#endif
-
-
-#ifndef NGX_COMPILER
-#define NGX_COMPILER  "gcc 9.4.0 (Ubuntu 9.4.0-1ubuntu1~20.04.2) "
 #endif
 
 
@@ -628,13 +623,18 @@
 #endif
 
 
-#ifndef NGX_QUIC_OPENSSL_COMPAT
-#define NGX_QUIC_OPENSSL_COMPAT  1
+#ifndef NGX_OPENSSL_NO_CONFIG
+#define NGX_OPENSSL_NO_CONFIG  1
 #endif
 
 
 #ifndef NGX_QUIC
 #define NGX_QUIC  1
+#endif
+
+
+#ifndef NGX_QUIC_OPENSSL_COMPAT
+#define NGX_QUIC_OPENSSL_COMPAT  1
 #endif
 
 
@@ -644,7 +644,7 @@
 
 
 #ifndef NGX_CONF_PREFIX
-#define NGX_CONF_PREFIX  "/home/kryuchkov/git/ngx_waf_ingress_controller/build/config/"
+#define NGX_CONF_PREFIX  "./"
 #endif
 
 
@@ -654,7 +654,7 @@
 
 
 #ifndef NGX_CONF_PATH
-#define NGX_CONF_PATH  "/home/kryuchkov/git/ngx_waf_ingress_controller/build/config/nginx.conf"
+#define NGX_CONF_PATH  "./nginx.conf"
 #endif
 
 
@@ -669,12 +669,12 @@
 
 
 #ifndef NGX_ERROR_LOG_PATH
-#define NGX_ERROR_LOG_PATH  "/home/kryuchkov/git/ngx_waf_ingress_controller/logs/error.log"
+#define NGX_ERROR_LOG_PATH  "./logs/error.log"
 #endif
 
 
 #ifndef NGX_HTTP_LOG_PATH
-#define NGX_HTTP_LOG_PATH  "/home/kryuchkov/git/ngx_waf_ingress_controller/logs/access.log"
+#define NGX_HTTP_LOG_PATH  "./logs/access.log"
 #endif
 
 

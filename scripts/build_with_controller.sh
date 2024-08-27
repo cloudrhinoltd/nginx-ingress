@@ -30,7 +30,7 @@ PROJECT_DIR="$HOME_DIR/src"
 NGINX_SRC_DIR="$PROJECT_DIR/nginx-$NGINX_VERSION"
 NGINX_CONF="$HOME_DIR/build/config/nginx.conf"
 NGINX_EXEC="$NGINX_SRC_DIR/objs/nginx"
-NGINX_LOG_DIR="$HOME_DIR/logs"
+NGINX_LOG_DIR="$HOME_DIR/build/logs"
 NGINX_TEMP_DIR="$HOME_DIR/build/temp"
 BUILD_DIR="$HOME_DIR/build"
 
@@ -96,15 +96,28 @@ mkdir -p "$NGINX_TEMP_DIR/scgi_temp"
 mkdir -p "$HOME_DIR/build/config"
 mkdir -p "$HOME_DIR/build/geoip"
 
+# Set environment variables for build and runtime
+export LUAJIT_LIB="$LUAJIT_INSTALL_DIR/lib"
+export LUAJIT_INC="$LUAJIT_INSTALL_DIR/include/luajit-2.1"
+export LD_LIBRARY_PATH="$LUAJIT_INSTALL_DIR/lib:$LD_LIBRARY_PATH"
+export LUA_PATH="$LUAJIT_INSTALL_DIR/share/lua/5.1/?.lua;$LUAJIT_INSTALL_DIR/share/lua/5.1/?/init.lua"
+export LUA_CPATH="$LUAJIT_INSTALL_DIR/lib/lua/5.1/?.so"
+
+# Ensure we are using the default OpenSSL 1.1 libraries
+export CFLAGS="-I/usr/include"
+export LDFLAGS="-L/usr/lib/x86_64-linux-gnu"
+
 # Clone and build Ingress NGINX Controller
 if [ ! -d "$INGRESS_NGINX_DIR" ]; then
     git clone https://github.com/kubernetes/ingress-nginx.git "$INGRESS_NGINX_DIR"
 fi
 
-if [ ! -f $INGRESS_NGINX_DIR/rootfs/bin/nginx-ingress-controller ]; then
+export GOARCH=amd64
+
+if [ ! -f $INGRESS_NGINX_DIR/rootfs/bin/$GOARCH/nginx-ingress-controller ]; then
     cd "$INGRESS_NGINX_DIR"
+    git checkout 3f0129aa8cf192680d6b356b682eaa61a3873c01
     export GOOS=linux
-    export GOARCH=amd64
     # Set necessary environment variables
     PKG="k8s.io/ingress-nginx"
     ARCH="amd64"
@@ -117,6 +130,7 @@ if [ ! -f $INGRESS_NGINX_DIR/rootfs/bin/nginx-ingress-controller ]; then
     make build
     cp "$INGRESS_NGINX_DIR/rootfs/bin/$GOARCH/nginx-ingress-controller" "$BUILD_DIR/nginx-ingress-controller"
     cp "$INGRESS_NGINX_DIR/rootfs/bin/$GOARCH/wait-shutdown" "$BUILD_DIR/wait-shutdown"
+    cp "$INGRESS_NGINX_DIR/rootfs/bin/$GOARCH/dbg" "$BUILD_DIR/dbg"
     chmod +x "$BUILD_DIR/nginx-ingress-controller" "$BUILD_DIR/wait-shutdown"
 
 fi
@@ -247,47 +261,6 @@ fi
 
 cd $HOME_DIR
 
-# Set environment variables for build and runtime
-export LUAJIT_LIB="$LUAJIT_INSTALL_DIR/lib"
-export LUAJIT_INC="$LUAJIT_INSTALL_DIR/include/luajit-2.1"
-export LD_LIBRARY_PATH="$LUAJIT_INSTALL_DIR/lib:$LD_LIBRARY_PATH"
-export LUA_PATH="$LUAJIT_INSTALL_DIR/share/lua/5.1/?.lua;$LUAJIT_INSTALL_DIR/share/lua/5.1/?/init.lua"
-export LUA_CPATH="$LUAJIT_INSTALL_DIR/lib/lua/5.1/?.so"
-
-# Ensure build, log, and temporary directories exist
-mkdir -p "$BUILD_DIR"
-mkdir -p "$NGINX_LOG_DIR"
-mkdir -p "$NGINX_TEMP_DIR/client_body_temp"
-mkdir -p "$NGINX_TEMP_DIR/proxy_temp"
-mkdir -p "$NGINX_TEMP_DIR/fastcgi_temp"
-mkdir -p "$NGINX_TEMP_DIR/uwsgi_temp"
-mkdir -p "$NGINX_TEMP_DIR/scgi_temp"
-
-cd $PROJECT_DIR
-
-cp -rf ./lua-resty-http-$LUA_RESTY_HTTP_VERSION/lib/* $LUAJIT_INSTALL_DIR/share/lua/5.1/
-cp -rf ./lua-resty-string-$LUA_RESTY_STRING_VERSION/lib/* $LUAJIT_INSTALL_DIR/share/lua/5.1/
-cp -rf ./lua-resty-dns-$LUA_RESTY_DNS_VERSION/lib/* $LUAJIT_INSTALL_DIR/share/lua/5.1/
-cp -rf ./lua-resty-lock-$LUA_RESTY_LOCK_VERSION/lib/* $LUAJIT_INSTALL_DIR/share/lua/5.1/
-cp -rf ./lua-resty-lrucache-$LUA_RESTY_LRUCACHE_VERSION/lib/* $LUAJIT_INSTALL_DIR/share/lua/5.1/
-cp -rf ./lua-resty-upload-$LUA_RESTY_UPLOAD_VERSION/lib/resty $LUAJIT_INSTALL_DIR/share/lua/5.1/
-cp -rf ./lua-resty-websocket-$LUA_RESTY_WEBSOCKET_VERSION/lib/* $LUAJIT_INSTALL_DIR/share/lua/5.1/
-cp -rf ./lua-resty-memcached-$LUA_RESTY_MEMCACHED_VERSION/lib/* $LUAJIT_INSTALL_DIR/share/lua/5.1/
-cp -rf ./lua-resty-redis-$LUA_RESTY_REDIS_VERSION/lib/* $LUAJIT_INSTALL_DIR/share/lua/5.1/
-cp -rf ./lua-resty-core-$LUA_RESTY_CORE_VERSION/lib/* $LUAJIT_INSTALL_DIR/share/lua/5.1/
-
-./build/sbin/nginx -c ./build/config/nginx.conf -s stop || true
-rm -rf ./logs/* || true
-
-# Download and extract the latest NGINX core
-if [ ! -d "$NGINX_SRC_DIR" ]; then
-    wget "http://nginx.org/download/nginx-$NGINX_VERSION.tar.gz" -O nginx.tar.gz
-    tar -zxvf nginx.tar.gz -C "$PROJECT_DIR"
-    rm nginx.tar.gz
-fi
-
-cd $HOME_DIR
-
 # Configure and build NGINX with all required modules
 if [ ! -d "$WAF_MODULE_DIR" ]; then
     git clone https://github.com/cloudrhinoltd/ngx-waf-protect.git
@@ -298,10 +271,12 @@ cd "$NGINX_SRC_DIR"
 WAF_MODULE_OPTION="--add-module=$WAF_MODULE_DIR"
 GEOIP_DB_PATH="$WAF_MODULE_DIR/../build/geoip/GeoLite2-City.mmdb"
 
+make clean || true
+
 ./configure --prefix='' \
-            --conf-path="$NGINX_CONF" \
-            --error-log-path="$NGINX_LOG_DIR/error.log" \
-            --http-log-path="$NGINX_LOG_DIR/access.log" \
+            --conf-path="./nginx.conf" \
+            --error-log-path="./logs/error.log" \
+            --http-log-path="./logs/access.log" \
             --pid-path='./nginx.pid' \
             --lock-path='./nginx.lock' \
             --modules-path='./modules' \
@@ -337,8 +312,8 @@ GEOIP_DB_PATH="$WAF_MODULE_DIR/../build/geoip/GeoLite2-City.mmdb"
             --http-fastcgi-temp-path='./temp/fastcgi_temp' \
             --http-uwsgi-temp-path='./temp/uwsgi_temp' \
             --http-scgi-temp-path='./temp/scgi_temp' \
-            --with-cc-opt='-I/usr/local/include -I/usr/include/openssl -I/usr/include/pcre -I$LUAJIT_INSTALL_DIR/include/luajit-2.1 -DNGX_HTTP_HEADERS -g -O2 -fPIE -fstack-protector-strong -Wformat -Werror=format-security -Wno-deprecated-declarations -fno-strict-aliasing -D_FORTIFY_SOURCE=2 --param=ssp-buffer-size=4 -DTCP_FASTOPEN=23 -fPIC -Wno-cast-function-type -m64 -mtune=generic' \
-            --with-ld-opt="-L../ngx_brotli/deps/brotli/out -lbrotlienc -lmaxminddb -lbrotlicommon -lm  -fPIE -fPIC -pie -Wl,-z,relro -Wl,-z,now" \
+            --with-cc-opt="-I/usr/include/pcre -I$LUAJIT_INSTALL_DIR/include/luajit-2.1 -DNGX_HTTP_HEADERS -g -O2 -fPIE -fstack-protector-strong -Wformat -Werror=format-security -Wno-deprecated-declarations -fno-strict-aliasing -D_FORTIFY_SOURCE=2 --param=ssp-buffer-size=4 -DTCP_FASTOPEN=23 -fPIC -Wno-cast-function-type -m64 -mtune=generic" \
+            --with-ld-opt="-L/usr/lib/x86_64-linux-gnu -L../ngx_brotli/deps/brotli/out -lbrotlienc -lmaxminddb -lbrotlicommon -lm -fPIE -fPIC -pie -Wl,-z,relro -Wl,-z,now" \
             --user=www-data --group=www-data \
             $WAF_MODULE_OPTION \
             --add-module="$NGX_DEVEL_KIT_DIR" \
@@ -407,9 +382,9 @@ http {
             enable_rce_php_node off;          # Requires Commercial License
             enable_session_rules off;         # Requires Commercial License
 
-            geoip_db_path "$GEOIP_DB_PATH";
-            
-            root   $BUILD_DIR/html;
+            geoip_db_path "geoip/GeoLite2-City.mmdb";
+
+            root   html;
             index  index.html index.htm;
         }
 
@@ -434,11 +409,11 @@ if [ ! -f "$NGINX_EXEC" ]; then
 fi
 
 cp $NGINX_EXEC $BUILD_DIR/nginx
-cp "$WAF_MODULE_DIR/../build/mime.types" "$BUILD_DIR"
+cp "$WAF_MODULE_DIR/../build/mime.types" "$BUILD_DIR/config"
 cp "$WAF_MODULE_DIR/../build/geoip/GeoLite2-City.mmdb" "$BUILD_DIR/geoip"
 
 # Output success message
 echo "Custom NGINX with WAF Protect module built successfully and located at $BUILD_DIR."
 
-# cd $HOME_DIR/$PROJECT_DIR
-# ./build/nginx -c ./build/config/nginx.conf
+cd $HOME_DIR
+./build/nginx -c ./build/config/nginx.conf
