@@ -15,7 +15,7 @@ jobs:
       uses: actions/checkout@v3
       with:
        fetch-depth: 0 # Fetch all history for all branches and tags
-       
+
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
 
@@ -45,7 +45,7 @@ jobs:
     - name: Build Docker image
       run: |
         bash scripts/build_with_controller_ssl3.sh
-        docker buildx build -f Dockerfile --tag ghcr.io/cloudrhinoltd/nginx-ingress:${{ env.LATEST_TAG }} .
+        docker buildx build -f Dockerfile --tag ghcr.io/cloudrhinoltd/nginx-ingress:${{ env.LATEST_TAG }} --load .
 
     # Optional: Test the Docker image before pushing
     - name: Test Docker image
