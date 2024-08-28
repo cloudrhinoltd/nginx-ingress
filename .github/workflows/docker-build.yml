@@ -4,6 +4,7 @@ on:
   push:
     tags:
       - 'v*.*.*' # Triggers the workflow on version tag pushes
+  workflow_dispatch:
 
 jobs:
   build-and-publish:
