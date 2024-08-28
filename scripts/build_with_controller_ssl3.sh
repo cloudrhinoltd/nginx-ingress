@@ -42,6 +42,7 @@ install_if_missing "libssl-dev"
 install_if_missing "cmake"
 install_if_missing "git"
 install_if_missing "wget"
+install_if_missing "libmaxminddb-dev" 
 
 # Define variables
 HOME_DIR=$(pwd)

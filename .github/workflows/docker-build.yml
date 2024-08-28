@@ -4,7 +4,6 @@ on:
   push:
     tags:
       - 'v*.*.*' # Triggers the workflow on version tag pushes
-  workflow_dispatch:
 
 jobs:
   build-and-publish:
@@ -24,20 +23,19 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
-    # Install Docker in the runner directly instead of using Docker-in-Docker
-    - name: Install Docker
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y docker-ce docker-ce-cli containerd.io
+    # Optional: Cache dependencies to speed up the build process
+    - name: Cache LuaRocks dependencies
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.cache/luarocks
+        key: ${{ runner.os }}-luarocks-${{ hashFiles('**/lua_rocks') }}
+        restore-keys: |
+          ${{ runner.os }}-luarocks-
 
-    # Build the Ingress Controller binaries
-    - name: Run build script
-      run: |
-        bash scripts/build_with_controller_ssl3.sh
-
-    # Build and tag the Docker image
     - name: Build Docker image
       run: |
+        bash scripts/build_with_controller_ssl3.sh
         docker buildx build -f Dockerfile --tag ghcr.io/cloudrhinoltd/nginx-ingress:${{ github.ref_name }} .
 
     # Optional: Test the Docker image before pushing
