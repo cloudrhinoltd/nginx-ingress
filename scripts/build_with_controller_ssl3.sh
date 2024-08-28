@@ -122,13 +122,16 @@ export LD_LIBRARY_PATH="/usr/local/ssl/lib64:$LD_LIBRARY_PATH"
 
 # Check if OpenSSL 3.0 is installed, and install if necessary
 OPENSSL_VERSION=$(openssl version 2>/dev/null | grep -oE 'OpenSSL 3\.[0-9]+\.[0-9]+' || true)
-if [ -z "$OPENSSL_VERSION" ]; then
+if [ ! -d "$PROJECT_DIR/openssl-3.0.9" ]; then
+
     echo "OpenSSL 3.0 not found. Installing OpenSSL 3.0..."
-    exit 1
     cd "$PROJECT_DIR"
     wget https://www.openssl.org/source/openssl-3.0.9.tar.gz
     tar -xvzf openssl-3.0.9.tar.gz
-    cd openssl-3.0.9
+fi
+
+if [ -z "$OPENSSL_VERSION" ]; then
+    cd "$PROJECT_DIR/openssl-3.0.9"
     ./config --prefix=/usr/local/ssl --openssldir=/usr/local/ssl shared zlib
     make -j$(nproc)
     sudo make install
