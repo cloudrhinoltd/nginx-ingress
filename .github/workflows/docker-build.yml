@@ -5,7 +5,6 @@ on:
     tags:
       - 'v*.*.*' # Triggers the workflow on version tag pushes
   workflow_dispatch:
-    
 
 jobs:
   build-and-publish:
@@ -35,16 +34,22 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-luarocks-
 
+    - name: Get latest tag
+      id: get_tag
+      run: |
+        latest_tag=$(git describe --tags `git rev-list --tags --max-count=1`)
+        echo "LATEST_TAG=${latest_tag}" >> $GITHUB_ENV
+
     - name: Build Docker image
       run: |
         bash scripts/build_with_controller_ssl3.sh
-        docker buildx build -f Dockerfile --tag ghcr.io/cloudrhinoltd/nginx-ingress:${{ github.ref_name }} .
+        docker buildx build -f Dockerfile --tag ghcr.io/cloudrhinoltd/nginx-ingress:${{ env.LATEST_TAG }} .
 
     # Optional: Test the Docker image before pushing
     - name: Test Docker image
       run: |
-        docker run --rm ghcr.io/cloudrhinoltd/nginx-ingress:${{ github.ref_name }} nginx -t
+        docker run --rm ghcr.io/cloudrhinoltd/nginx-ingress:${{ env.LATEST_TAG }} nginx -t
 
     - name: Push Docker image
       run: |
-        docker push ghcr.io/cloudrhinoltd/nginx-ingress:${{ github.ref_name }}
+        docker push ghcr.io/cloudrhinoltd/nginx-ingress:${{ env.LATEST_TAG }}
