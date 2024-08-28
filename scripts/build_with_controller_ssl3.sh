@@ -123,6 +123,7 @@ export LD_LIBRARY_PATH="/usr/local/ssl/lib64:$LD_LIBRARY_PATH"
 OPENSSL_VERSION=$(openssl version 2>/dev/null | grep -oE 'OpenSSL 3\.[0-9]+\.[0-9]+' || true)
 if [ -z "$OPENSSL_VERSION" ]; then
     echo "OpenSSL 3.0 not found. Installing OpenSSL 3.0..."
+    exit 1
     cd "$PROJECT_DIR"
     wget https://www.openssl.org/source/openssl-3.0.9.tar.gz
     tar -xvzf openssl-3.0.9.tar.gz
@@ -387,7 +388,7 @@ export LDFLAGS="-L/usr/local/ssl/lib"
             --http-uwsgi-temp-path='./temp/uwsgi_temp' \
             --http-scgi-temp-path='./temp/scgi_temp' \
             --with-cc-opt="-I/usr/local/ssl/include -I/usr/include/pcre -I$LUAJIT_INSTALL_DIR/include/luajit-2.1 -DNGX_HTTP_HEADERS -g -O2 -fPIE -fstack-protector-strong -Wformat -Werror=format-security -Wno-deprecated-declarations -fno-strict-aliasing -D_FORTIFY_SOURCE=2 --param=ssp-buffer-size=4 -DTCP_FASTOPEN=23 -fPIC -Wno-cast-function-type -m64 -mtune=generic" \
-            --with-ld-opt="-L/usr/local/ssl/lib64 -L/usr/local/ssl/lib -L../ngx_brotli/deps/brotli/out -lbrotlienc -lmaxminddb -lbrotlicommon -lm -fPIE -fPIC -pie -Wl,-z,relro -Wl,-z,now" \
+            --with-ld-opt="-L/usr/local/ssl/lib64 -L../ngx_brotli/deps/brotli/out -lbrotlienc -lmaxminddb -lbrotlicommon -lm -fPIE -fPIC -pie -Wl,-z,relro -Wl,-z,now" \
             --with-openssl=$PROJECT_DIR/openssl-3.0.9 \
             --user=www-data --group=www-data \
             $WAF_MODULE_OPTION \
