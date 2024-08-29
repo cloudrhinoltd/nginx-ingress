@@ -6,45 +6,71 @@ on:
       - 'v*.*.*' # Triggers the workflow on version tag pushes
   workflow_dispatch:
 
+permissions:
+  packages: write
+  contents: read
+  id-token: write # Required for Cosign signing
+
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetch all history for all branches and tags
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
+      - name: Install Cosign
+        if: github.event_name != 'pull_request'
+        uses: sigstore/cosign-installer@v3.5.0
+        with:
+          cosign-release: 'v2.2.4'
 
-    - name: Log in to GitHub Container Registry
-      uses: docker/login-action@v2
-      with:
-        registry: ghcr.io
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3.0.0
 
-    # Install Docker in the runner directly instead of using Docker-in-Docker
-    - name: Install Docker
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y docker-ce docker-ce-cli containerd.io
+      - name: Log in to GitHub Container Registry
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v3.0.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-    # Build the Ingress Controller binaries
-    - name: Run build script
-      run: |
-        bash scripts/build_with_controller_ssl3.sh
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5.0.0
+        with:
+          images: ghcr.io/cloudrhinoltd/nginx-ingress
 
-    # Build and tag the Docker image
-    - name: Build Docker image
-      run: |
-        docker buildx build -f Dockerfile --tag ghcr.io/cloudrhinoltd/nginx-ingress:${{ github.ref_name }} .
+      # Build and test Docker image
+      - name: Build Docker image
+        uses: docker/build-push-action@v5.0.0
+        id: build-and-push
+        with:
+          context: .
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
-    # Optional: Test the Docker image before pushing
-    - name: Test Docker image
-      run: |
-        docker run --rm ghcr.io/cloudrhinoltd/nginx-ingress:${{ github.ref_name }} nginx -t
+      # Optional: Test the Docker image before pushing
+      - name: Test Docker image
+        run: |
+          docker run --rm ghcr.io/cloudrhinoltd/nginx-ingress:${{ steps.meta.outputs.tags }} nginx -t
 
-    - name: Push Docker image
-      run: |
-        docker push ghcr.io/cloudrhinoltd/nginx-ingress:${{ github.ref_name }}
+      # Push the Docker image
+      - name: Push Docker image
+        if: ${{ github.event_name != 'pull_request' }}
+        run: |
+          docker push ghcr.io/cloudrhinoltd/nginx-ingress:${{ steps.meta.outputs.tags }}
+
+      # Sign the published Docker image
+      - name: Sign the published Docker image
+        if: ${{ github.event_name != 'pull_request' }}
+        env:
+          TAGS: ${{ steps.meta.outputs.tags }}
+          DIGEST: ${{ steps.build-and-push.outputs.digest }}
+        run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
